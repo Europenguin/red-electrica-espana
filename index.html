@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La red eléctrica española en 2026 · Generación, almacenamiento y estabilidad</title>
+<style>
+  :root{
+    --bg:#f2f3f1; --card:#ffffff; --ink:#11161c; --ink2:#39424c; --muted:#6b7681;
+    --line:#e3e6e8; --line2:#cfd5da;
+    --acc:#0f7a5a; --acc-soft:#e6f4ee; --acc2:#0b6e8f; --warn:#b45309;
+    --blue:#1d3557;
+    --t-nuc:#7c5cbf; --t-gas:#e07b39; --t-car:#6b7280; --t-hid:#2b7fc4;
+    --t-bom:#0e9aa7; --t-bes:#16a34a; --t-ren:#c2880b; --t-int:#5b6470;
+    --shadow:0 1px 2px rgba(16,24,32,.06),0 8px 24px rgba(16,24,32,.06);
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:15px; line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px 56px}
+  a{color:var(--blue)}
+
+  /* ---------- HERO ---------- */
+  .hero{background:linear-gradient(135deg,#0c1310 0%,#132229 55%,#0b2318 100%);color:#fff;padding:34px 0 30px;border-bottom:4px solid var(--acc)}
+  .hero .wrap{padding-bottom:0}
+  .kick{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#a8d8c6;font-weight:700}
+  .kick::before{content:"";width:26px;height:2px;background:var(--acc);display:block}
+  h1{font-size:clamp(28px,4.4vw,50px);line-height:1.04;margin:12px 0 8px;letter-spacing:-.02em;font-weight:800;max-width:22ch}
+  h1 em{font-style:normal;color:#3ddc97}
+  .sub{color:#c3cad2;max-width:78ch;font-size:16px;margin:0 0 18px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 12px;font-size:12.5px;color:#e7ebef;font-weight:600}
+  .chip b{color:#6ee7b7}
+
+  /* ---------- KPIs ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:-26px 0 26px;position:relative;z-index:2}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px 15px;box-shadow:var(--shadow)}
+  .kpi .lab{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .val{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px;line-height:1}
+  .kpi .val small{font-size:14px;font-weight:700;color:var(--muted);letter-spacing:0}
+  .kpi .note{font-size:12.5px;color:var(--ink2);line-height:1.35}
+  .kpi.hot .val{color:var(--acc)}
+  .kpi.warn .val{color:var(--warn)}
+  .spark{display:flex;align-items:flex-end;gap:5px;height:34px;margin:8px 0 4px}
+  .spark div{flex:1;background:var(--acc-soft);border-radius:3px 3px 0 0;position:relative;border-bottom:2px solid var(--acc)}
+  .spark div span{position:absolute;top:-15px;left:0;right:0;text-align:center;font-size:10.5px;font-weight:700;color:var(--acc)}
+
+  /* ---------- SECTIONS ---------- */
+  section{margin:34px 0 0}
+  .sec-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:0 0 14px}
+  .sec-h h2{font-size:21px;margin:0;letter-spacing:-.01em;font-weight:800}
+  .sec-h p{margin:0;color:var(--muted);font-size:13.5px}
+  .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--acc);color:#fff;border-radius:5px;padding:3px 7px}
+  .tag.alt{background:var(--acc2)}
+  .tag.warn{background:var(--warn)}
+
+  /* ---------- MAP ---------- */
+  .map-grid{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+  .map-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 14px 6px;position:relative}
+  .map-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;padding:2px 4px 10px}
+  .filters{display:flex;flex-wrap:wrap;gap:6px}
+  .filters label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer;background:#fbfcfc;user-select:none}
+  .filters input{accent-color:var(--acc);margin:0}
+  .btn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2)}
+  .btn:hover{border-color:var(--acc);color:var(--acc)}
+  .stage{position:relative;width:100%}
+  .stage svg.map{width:100%;height:auto;display:block;overflow:visible}
+  .prov{fill:#eceef0;stroke:#fff;stroke-width:.9;transition:fill .15s}
+  .prov:hover{fill:#e2e6ea}
+  .inset-box{fill:none;stroke:var(--line2);stroke-width:1.2;stroke-dasharray:5 4}
+  .inset-lab{font-size:11px;fill:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .mk{cursor:pointer}
+  .mk .hit{fill:transparent;stroke:none}
+  .mk .shp{stroke-width:2;transition:transform .12s}
+  .mk:hover .shp,.mk.sel .shp{stroke-width:3}
+  .mk.sel .halo{opacity:1}
+  .halo{opacity:0;fill:none;stroke:var(--acc);stroke-width:1.4;stroke-dasharray:3 3}
+  .labels{position:absolute;inset:0;pointer-events:none}
+  .lb{position:absolute;transform:translate(0,-50%);display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.86);border:1px solid rgba(0,0,0,.06);border-radius:7px;padding:2px 6px;font-size:11.5px;font-weight:700;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.08);pointer-events:auto;cursor:pointer;line-height:1.25;color:var(--ink2)}
+  .lb:hover,.lb.sel{border-color:var(--acc);color:var(--acc)}
+  .lb.l{transform:translate(-100%,-50%)}
+  .lb.r{transform:translate(0,-50%)}
+  .lb i{width:9px;height:9px;border-radius:2px;flex:none;display:inline-block}
+  .tip{position:absolute;z-index:9;background:#151a21;color:#fff;border-radius:10px;padding:9px 11px;font-size:12px;max-width:270px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .tip.on{opacity:1;transform:translateY(0)}
+  .tip .t1{font-weight:800;font-size:13px;margin-bottom:2px}
+  .tip .t2{color:#aeb7c0;font-size:11.5px;margin-bottom:6px}
+  .tip .t3{color:#e6eaee}
+  .legend{display:flex;flex-wrap:wrap;gap:12px 14px;padding:10px 6px 8px;border-top:1px solid var(--line);margin-top:6px;font-size:12px;color:var(--ink2)}
+  .lg{display:flex;align-items:center;gap:7px;font-weight:600}
+  .lg svg{flex:none}
+
+  /* ---------- PANEL ---------- */
+  .panel{display:flex;flex-direction:column;gap:14px;position:sticky;top:14px}
+  .p-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}
+  .p-card h3{margin:0 0 4px;font-size:15.5px;letter-spacing:-.01em}
+  .p-card .where{font-size:12.5px;color:var(--muted);margin-bottom:9px}
+  .status{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:5px;padding:3px 7px;margin-bottom:9px}
+  .st-op{background:#e7f4ec;color:#1f6b45}
+  .st-ob{background:#fff4e2;color:#9a6206}
+  .st-an{background:#e8f1f7;color:#0b6e8f}
+  .st-cl{background:#eef0f2;color:#5b6470}
+  .tech{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--ink2);background:#f5f7f8;border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-bottom:9px}
+  .tech i{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .p-card p.desc{font-size:13.2px;color:var(--ink2);margin:0 0 10px}
+  .facts{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:12.6px;margin:0}
+  .facts dt{color:var(--muted);font-weight:700}
+  .facts dd{margin:0;color:var(--ink);font-weight:600}
+  .src{margin-top:11px;padding-top:9px;border-top:1px dashed var(--line2);font-size:11.4px;color:var(--muted)}
+  .empty{color:var(--muted);font-size:13px}
+  .idx{display:flex;flex-direction:column;gap:2px;max-height:326px;overflow:auto;padding-right:2px}
+  .idx button{display:flex;align-items:center;gap:8px;text-align:left;border:0;background:transparent;border-radius:8px;padding:7px 8px;cursor:pointer;font:inherit;font-size:12.7px;color:var(--ink2)}
+  .idx button:hover{background:#f5f7f8}
+  .idx button.sel{background:var(--acc-soft);color:var(--acc);font-weight:700}
+  .idx .nm{flex:1}
+  .idx .yr{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+  .idx button.sel .yr{color:var(--acc)}
+
+  /* ---------- CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .c3{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:15px 16px;border-top:3px solid var(--acc)}
+  .c3.t-bom{border-top-color:var(--t-bom)}
+  .c3.t-bes{border-top-color:var(--t-bes)}
+  .c3.t-gas{border-top-color:var(--t-gas)}
+  .c3.t-nuc{border-top-color:var(--t-nuc)}
+  .c3.t-ren{border-top-color:var(--t-ren)}
+  .c3.t-int{border-top-color:var(--t-int)}
+  .c3.t-hid{border-top-color:var(--t-hid)}
+  .c3.t-car{border-top-color:var(--t-car)}
+  .c3 h4{margin:0 0 2px;font-size:14.5px;letter-spacing:-.01em}
+  .c3 .where{font-size:12px;color:var(--muted);margin-bottom:7px}
+  .c3 ul{margin:8px 0 0;padding-left:16px;font-size:12.6px;color:var(--ink2)}
+  .c3 li{margin-bottom:3px}
+  .grp-t{grid-column:1/-1;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .grp-keep{display:contents}
+
+  /* ---------- CHARTS ---------- */
+  .charts{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:17px 18px}
+  .box h3{margin:0 0 3px;font-size:15.5px}
+  .box .hint{font-size:12.4px;color:var(--muted);margin:0 0 16px}
+  .ana{margin-top:16px;padding-top:13px;border-top:1.5px dashed var(--line2)}
+  .ana .k{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+  .ana p{margin:0 0 9px;font-size:13.1px;line-height:1.58;color:var(--ink2)}
+  .ana p:last-child{margin-bottom:0}
+  .ana p strong{color:var(--ink)}
+  .bars{display:flex;align-items:flex-end;gap:18px;height:190px;padding-top:14px;border-bottom:1.5px solid var(--line2)}
+  .bcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative}
+  .bcol .pct{font-size:15px;font-weight:800;color:var(--acc);margin-bottom:4px}
+  .bcol .bar{width:100%;background:linear-gradient(180deg,#16a06f,#0b6b4c);border-radius:6px 6px 0 0}
+  .bcol.alt .bar{background:linear-gradient(180deg,#7fd6b6,#16a06f)}
+  .bcol.dim .pct{color:var(--warn)}
+  .bcol.dim .bar{background:linear-gradient(180deg,#e6b16a,#b45309)}
+  .bx{display:flex;gap:18px;margin-top:8px}
+  .bx div{flex:1;text-align:center;font-size:12.3px;color:var(--ink2);font-weight:700}
+  .bx div span{display:block;font-weight:600;color:var(--muted);font-size:11.3px}
+  .hbar{margin-bottom:11px}
+  .hbar .r1{display:flex;justify-content:space-between;font-size:12.7px;font-weight:700;margin-bottom:4px}
+  .hbar .r1 span:last-child{color:var(--acc)}
+  .hbar .tr{height:12px;background:#eef0f2;border-radius:99px;overflow:hidden}
+  .hbar .fl2{height:100%;background:linear-gradient(90deg,#0f7a5a,#3ddc97);border-radius:99px}
+  .hbar .who{display:flex;align-items:center;gap:6px}
+  .hbar .who i{width:10px;height:10px;border-radius:2px;flex:none}
+
+  /* ---------- CAPACIDAD / OBJETIVO ---------- */
+  .charts.cap-row{grid-template-columns:1fr}
+  .capleg{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 4px;font-size:12.2px;color:var(--ink2);font-weight:700}
+  .capleg i{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-1px}
+  .cbars{display:flex;align-items:flex-end;gap:clamp(8px,2.6vw,40px);height:184px;padding-top:20px;border-bottom:1.5px solid var(--line2)}
+  .cgrp{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:7px;height:100%}
+  .cbcol{flex:1;max-width:78px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+  .cv{font-size:13.5px;font-weight:800;margin-bottom:5px;color:var(--ink2);white-space:nowrap}
+  .cv.acc{color:var(--acc)}
+  .cbar{width:100%;border-radius:6px 6px 0 0;min-height:4px}
+  .cbar.now{background:linear-gradient(180deg,#9aa7b3,#5b6470)}
+  .cbar.acc{background:linear-gradient(180deg,#3ddc97,#0f7a5a)}
+  .cbar.bom{background:linear-gradient(180deg,#5ec9d3,#0e7c86)}
+  .cbar.bes{background:linear-gradient(180deg,#6ee79a,#16a34a)}
+
+  /* ---------- TIMELINE ---------- */
+  .tl{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:24px 18px 18px;overflow-x:auto}
+  .tl .line{position:absolute;left:34px;right:34px;top:64px;height:2px;background:linear-gradient(90deg,var(--line2) 0%,var(--line2) 30%,var(--acc) 30%,var(--acc) 100%)}
+  .tl .row{display:grid;grid-template-columns:repeat(7,minmax(158px,1fr));gap:14px;position:relative;min-width:1100px}
+  .tl .it{position:relative;padding-top:80px}
+  .tl .it::before{content:"";position:absolute;top:57px;left:0;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--line2)}
+  .tl .it.hot::before{border-color:var(--acc);background:var(--acc);box-shadow:0 0 0 4px var(--acc-soft)}
+  .tl .yr{position:absolute;top:14px;left:0;font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .tl .it.hot .yr{color:var(--acc)}
+  .tl .tt{font-size:13px;font-weight:700;margin-bottom:3px}
+  .tl .dd{font-size:12.2px;color:var(--ink2);line-height:1.4}
+
+  /* ---------- FOOTER ---------- */
+  footer{margin-top:38px;border-top:1px solid var(--line2);padding-top:16px;font-size:12.2px;color:var(--muted)}
+  footer h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin:0 0 7px}
+  .fgrid{display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+  .cert{display:flex;gap:18px;align-items:center;margin-top:18px;padding-top:15px;border-top:1px dashed var(--line2)}
+  .cert .sello{width:134px;height:134px;flex:0 0 auto}
+  .cert .ct b{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:5px}
+  .cert .ct p{margin:0 0 4px;font-size:12.4px;color:var(--muted);max-width:78ch}
+  .cert .ct p.who{color:var(--ink2);font-weight:700;margin-bottom:0}
+  footer ul{margin:0;padding-left:17px;columns:2;column-gap:22px}
+  footer li{margin-bottom:3px;break-inside:avoid}
+
+  @media (max-width:1150px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .map-grid{grid-template-columns:1fr}
+    .panel{position:static}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .charts{grid-template-columns:1fr}
+    .tl .row{min-width:0;grid-template-columns:repeat(2,1fr);gap:18px 22px}
+    .tl .line{display:none}
+    .tl .it{padding-top:0}
+    .tl .it::before{display:none}
+    .tl .yr{position:static;display:block;margin-bottom:4px}
+  }
+  @media (max-width:680px){
+    .kpis,.cards{grid-template-columns:1fr}
+    .wrap{padding:0 14px 40px}
+    footer ul{columns:1}
+    .labels{display:none}
+    .tl .row{grid-template-columns:1fr}
+  }
+  @page{size:210mm 297mm;margin:12mm 11mm 14mm}
+  @media print{
+    body{background:#fff;margin:0}
+    .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .btn,.filters,.tip{display:none}
+    .panel{position:static}
+    .wrap{padding:0}
+    .hero .wrap{padding-top:30px;padding-bottom:30px}
+    .hero h1{font-size:30px;line-height:1.15}
+    .hero .sub{font-size:12.5px;margin-bottom:10px}
+    .hero .chips{gap:7px}
+    .kpis{display:block;columns:2;column-gap:16px;margin-top:30px}
+    .kpi{break-inside:avoid;page-break-inside:avoid;margin:0 0 16px;padding:18px 18px}
+    .map-grid{display:block}
+    .map-card,.panel,.idx{break-inside:avoid;page-break-inside:avoid;margin-bottom:14px}
+    .idx{display:block;max-height:none;overflow:visible;columns:2;column-gap:18px}
+    .idx button{break-inside:avoid;page-break-inside:avoid}
+    .cards,.charts{display:block;columns:2;column-gap:16px}
+    .charts.cap-row{columns:1}
+    .c3,.box{break-inside:avoid;page-break-inside:avoid;margin:0 0 10px;padding:10px 12px}
+    .c3 h4{font-size:13.5px}
+    .c3 .where{font-size:11px;margin-bottom:5px}
+    .c3 ul{font-size:11.6px;margin-top:6px}
+    .c3 li{margin-bottom:1.5px}
+    .grp-t{margin-top:14px !important;margin-bottom:6px !important;font-size:11.5px}
+    .sec-h{margin-bottom:8px !important}
+    .cbars{height:100px;gap:clamp(8px,2vw,26px)}
+    .sec-h{break-inside:avoid;page-break-inside:avoid;page-break-after:avoid}
+    .grp-t,.grp-keep{break-inside:avoid;page-break-inside:avoid}
+    .grp-keep{display:block}
+    .sec-mapa{break-before:page;page-break-before:always}
+    .sec-cards{break-before:page;page-break-before:always}
+    .sec-charts{break-before:page;page-break-before:always;margin-top:0}
+    .sec-alm{break-before:page;page-break-before:always;margin-top:0}
+    .sec-est{break-before:page;page-break-before:always;margin-top:0}
+    .tl{overflow:visible}
+    .tl .row{display:block;columns:2;column-gap:26px;min-width:0}
+    .tl .line{display:none}
+    .tl .it{break-inside:avoid;page-break-inside:avoid;padding-top:0;margin-bottom:16px}
+    .tl .it::before{display:none}
+    .tl .yr{position:static;display:block;margin-bottom:4px}
+    .tl .dd{font-size:10.4px}
+    footer{break-inside:avoid;page-break-inside:avoid;margin-top:24px;padding-top:13px}
+    .cert{margin-top:11px;padding-top:10px;gap:14px}
+    .cert .sello{width:104px;height:104px}
+    .cert .ct b{font-size:11.5px;margin-bottom:3px}
+    .cert .ct p{font-size:11.2px;margin-bottom:3px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">Infografía · datos a 20 de octubre de 2026</div>
+    <h1>España se electrifica: 142.558 MW y la carrera por <em>estabilizar la red</em></h1>
+    <p class="sub">Mapa de la generación, el almacenamiento y los proyectos que sostienen el sistema eléctrico español: las cinco centrales nucleares que aún quedan, el bombeo hidráulico que trabaja cada noche, las primeras baterías del sistema tras el apagón del 28 de abril de 2025 y los 22,5 GW de almacenamiento que faltan para 2030.</p>
+    <div class="chips">
+      <div class="chip"><b>142.558 MW</b> instalados · 67% renovables</div>
+      <div class="chip"><b>22,5 GW</b> de almacenamiento a 2030 (PNIEC)</div>
+      <div class="chip"><b>798 h</b> con precio ≤0 en 2025</div>
+      <div class="chip">Apagón del <b>28 de abril de 2025</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- KPIs -->
+  <section class="kpis" style="margin-top:26px">
+    <div class="kpi hot">
+      <div class="lab">Potencia instalada · cierre 2025</div>
+      <div class="val">142.558 <small>MW (+7,3%)</small></div>
+      <div class="note">150.809 MW con autoconsumo. En un solo año entraron casi <b>10 GW renovables</b> (8,8 GW fotovoltaicos y 1,2 GW eólicos).</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Almacenamiento en servicio</div>
+      <div class="val">3.427 <small>MW (2,4%)</small></div>
+      <div class="spark">
+        <div style="height:9%"><span>24</span></div>
+        <div style="height:37%"><span>96</span></div>
+        <div style="height:100%"><span>≈260</span></div>
+      </div>
+      <div class="note">Baterías en MW: 24 (2024) → 96 (2025, REE) → ≈260 (ago-2026, prensa). A eso se suman <b>3.331 MW de bombeo puro</b>.</div>
+    </div>
+    <div class="kpi hot">
+      <div class="lab">Objetivo PNIEC 2030</div>
+      <div class="val">22,5 <small>GW almacenamiento</small></div>
+      <div class="note">12,5 GW de escala diaria y semanal + 10 GW estacional. Hoy se cubre el <b>15%</b> del objetivo con el bombeo heredado.</div>
+    </div>
+    <div class="kpi warn">
+      <div class="lab">Horas con precio ≤0 · 2025</div>
+      <div class="val">798 <small>horas</small></div>
+      <div class="note">Casi el 70% a precios negativos. Se vertieron <b>5.414 GWh</b> renovables (3,1% de lo generado): el problema ya no es producir, es gestionar.</div>
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section class="sec-mapa">
+    <div class="sec-h">
+      <span class="tag">Mapa</span>
+      <h2>Generación, almacenamiento y fronteras eléctricas</h2>
+      <p>Forma = tecnología · relleno = en operación · trazo discontinuo = en obra o anunciado · gris = cierre. Pasa el ratón o pulsa un punto.</p>
+    </div>
+
+    <div class="map-grid">
+      <div class="map-card">
+        <div class="map-top">
+          <div class="filters" id="filters">
+            <label><input type="checkbox" data-f="nuc" checked> Nuclear</label>
+            <label><input type="checkbox" data-f="gas" checked> Gas</label>
+            <label><input type="checkbox" data-f="car" checked> Carbón</label>
+            <label><input type="checkbox" data-f="hid" checked> Hidráulica</label>
+            <label><input type="checkbox" data-f="bom" checked> Bombeo</label>
+            <label><input type="checkbox" data-f="bes" checked> Baterías</label>
+            <label><input type="checkbox" data-f="ren" checked> Renovables</label>
+            <label><input type="checkbox" data-f="int" checked> Interconectores</label>
+            <label><input type="checkbox" data-f="labels" checked> Etiquetas</label>
+          </div>
+          <button class="btn" onclick="window.print()">Guardar en PDF / imprimir</button>
+        </div>
+
+        <div class="stage" id="stage">
+          <svg class="map" id="map" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="labels" id="labels"></div>
+          <div class="tip" id="tip"></div>
+        </div>
+
+        <div class="legend">
+          <span class="lg"><svg width="16" height="16"><circle cx="8" cy="8" r="6" fill="#16a34a" stroke="#fff" stroke-width="2"/></svg> En operación</span>
+          <span class="lg"><svg width="16" height="16"><circle cx="8" cy="8" r="6" fill="#fff" stroke="#0e9aa7" stroke-width="2" stroke-dasharray="3 2.4"/></svg> En obra / anunciado</span>
+          <span class="lg"><svg width="16" height="16"><circle cx="8" cy="8" r="6" fill="#eef0f2" stroke="#6b7280" stroke-width="2"/></svg> Cierre / desmantelamiento</span>
+          <span class="lg"><svg width="16" height="16"><rect x="4" y="4" width="8" height="8" fill="none" stroke="#7c5cbf" stroke-width="2"/></svg> ▢ Nuclear</span>
+          <span class="lg"><svg width="16" height="16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="#e07b39" stroke-width="2"/></svg> ● Gas (CCGT)</span>
+          <span class="lg"><svg width="16" height="16"><polygon points="3.5,4.5 12.5,4.5 8,13" fill="none" stroke="#6b7280" stroke-width="2" stroke-linejoin="round"/></svg> ▼ Carbón</span>
+          <span class="lg"><svg width="16" height="16"><polygon points="4,4 12,4 14,8 12,12 4,12 2,8" fill="none" stroke="#2b7fc4" stroke-width="2" stroke-linejoin="round"/></svg> ⬡ Hidráulica</span>
+          <span class="lg"><svg width="16" height="16"><rect x="4" y="4" width="8" height="8" fill="none" stroke="#0e9aa7" stroke-width="2" transform="rotate(45 8 8)"/></svg> ◆ Bombeo</span>
+          <span class="lg"><svg width="16" height="16"><rect x="2.5" y="5" width="11" height="6" rx="1.6" fill="none" stroke="#16a34a" stroke-width="2"/></svg> ▭ Baterías</span>
+          <span class="lg"><svg width="16" height="16"><polygon points="8,3.5 13.5,13 2.5,13" fill="none" stroke="#c2880b" stroke-width="2" stroke-linejoin="round"/></svg> ▲ Renovables</span>
+          <span class="lg"><svg width="16" height="16"><rect x="3" y="3" width="3" height="10" fill="#5b6470"/><rect x="10" y="3" width="3" height="10" fill="#5b6470"/></svg> ⏚ Interconector</span>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="p-card" id="detail">
+          <h3>Selecciona una instalación</h3>
+          <p class="empty">En el mapa hay <b>5 centrales nucleares</b>, <b>12 centrales de bombeo</b>, <b>17 proyectos de baterías</b> y la generación de gas y carbón que sostiene el sistema. Pulsa cualquier punto o una fila del índice.</p>
+        </div>
+        <div class="p-card">
+          <h3>Índice del mapa</h3>
+          <div class="where">Ordenado por estado y tecnología</div>
+          <div class="idx" id="idx"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FICHAS -->
+  <section class="sec-cards">
+    <div class="sec-h">
+      <span class="tag">Fichas</span>
+      <h2>Qué sostiene la red, dónde y con qué potencia</h2>
+      <p>Cada ficha enlaza con su punto del mapa. Potencias brutas salvo indicación.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- GRÁFICOS -->
+  <section class="sec-charts">
+    <div class="sec-h">
+      <span class="tag">Sistema</span>
+      <h2>Un parque de 142 GW que ya se mueve sin termoeléctricas</h2>
+      <p>Capacidad instalada a cierre de 2025 y horas en las que el mercado paga por quitarse la energía.</p>
+    </div>
+    <div class="charts">
+      <div class="box">
+        <h3>Capacidad instalada por tecnología · cierre 2025</h3>
+        <p class="hint">Porcentaje sobre los 150.809 MW instalados con autoconsumo (REE, potencia instalada a 31/12/2025). El ciclo combinado, nuclear e hidráulica se muestran en la escala de referencia de su participación; los absolutos en GW van rotulados en cada barra.</p>
+        <div id="capbars"></div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>Dos tercios del parque ya son renovables, pero la potencia firme la siguen marcando otras tecnologías.</strong> La fotovoltaica (≈50 GW con autoconsumo) y la eólica (33,3 GW) son las dos tecnologías más grandes del sistema; juntas superan al resto. Detrás, el ciclo combinado (≈26 GW) y la nuclear (7,4 GW) siguen aportando la potencia programable que la red usa cuando no hay viento ni sol: en 2025, nuclear y gas sumaron el 34% de la generación.</p>
+          <p><strong>El carbón ya casi no existe.</strong> Con 829 MW operativos en dos plantas asturianas (una de ellas ya convertida a vapor) y el resto en desmantelamiento tras cerrar As Pontes (2024), el carbón pesa ~0,5% del parque: la transición térmica española es un hecho consumado, y el debate se ha desplazado al gas y al almacenamiento.</p>
+        </div>
+      </div>
+      <div class="box">
+        <h3>Horas con precio ≤0 €/MWh en el mercado diario</h3>
+        <p class="hint">Horas anuales con precio cero o negativo en OMIE. 2026 acumula ≈900 horas hasta agosto (UNEF).</p>
+        <div class="bars">
+          <div class="bcol"><div class="pct">109</div><div class="bar" style="height:12%"></div></div>
+          <div class="bcol"><div class="pct">784</div><div class="bar" style="height:87%"></div></div>
+          <div class="bcol"><div class="pct">798</div><div class="bar" style="height:89%"></div></div>
+          <div class="bcol dim"><div class="pct">≈900</div><div class="bar" style="height:100%"></div></div>
+        </div>
+        <div class="bx">
+          <div>2023<span>109 h · 0,1% del año</span></div>
+          <div>2024<span>537 h a cero + 247 negativas</span></div>
+          <div>2025<span>798 h · récord de mayo: 269</span></div>
+          <div>2026 (ene–ago)<span>≈900 h · 397 h negativas en T1</span></div>
+        </div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>El precio cero es el síntoma, no la enfermedad.</strong> Cuando el sol y el viento cubren la demanda, el mercado no tiene dónde poner la energía sobrante: en 2025 se vertieron 5.414 GWh y las horas negativas pasaron de ser excepción (2023) a rutina (2026). El sistema necesita capacidad de mover energía en el tiempo —bombeo y baterías— y capacidad firme para las horas sin renovables.</p>
+          <p><strong>Ahí entra el almacenamiento.</strong> Cada GWh de baterías desplaza vertidos, reduce el pico de precio y, sobre todo, compra horas de margen a la red. El efecto inverso también se ve: los 1.200 €/MWh de gas de agosto de 2026 explican por qué el ciclo combinado vuelve a facturar cuando el sistema aprieta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALMACENAMIENTO -->
+  <section class="sec-alm">
+    <div class="sec-h">
+      <span class="tag alt">Almacenamiento</span>
+      <h2>De 3,4 GW heredados a 22,5 GW en 2030</h2>
+      <p>El objetivo más ambicioso del PNIEC y la distancia entre lo que está en el mapa y lo que está en los papeles.</p>
+    </div>
+    <div class="charts cap-row">
+      <div class="box">
+        <h3>Almacenamiento instalado hoy vs. objetivo 2030</h3>
+        <p class="hint">GW. Datos de cierre de 2025 (REE: 3.331 MW de bombeo puro + 96 MW de baterías) y desglose del objetivo del PNIEC 2023-2030 (12,5 GW diario/semanal + 10 GW estacional, confirmado en el RD 997/2025). El parque reversible total —incluidas las centrales mixtas que también bombean— roza los 5,5 GW según el sector.</p>
+        <div class="capleg">
+          <span><i style="background:linear-gradient(180deg,#5ec9d3,#0e7c86)"></i>Bombeo hidráulico</span>
+          <span><i style="background:linear-gradient(180deg,#6ee79a,#16a34a)"></i>Baterías (BESS)</span>
+          <span><i style="background:linear-gradient(180deg,#9aa7b3,#5b6470)"></i>Parque total</span>
+        </div>
+        <div class="cbars">
+          <div class="cgrp">
+            <div class="cbcol"><div class="cv">3,4</div><div class="cbar now" style="height:15%"></div></div>
+          </div>
+          <div class="cgrp">
+            <div class="cbcol"><div class="cv">3,3</div><div class="cbar bom" style="height:15%"></div></div>
+            <div class="cbcol"><div class="cv acc">0,1</div><div class="cbar bes" style="height:3%"></div></div>
+          </div>
+          <div class="cgrp">
+            <div class="cbcol"><div class="cv">12,5</div><div class="cbar bom" style="height:56%"></div></div>
+            <div class="cbcol"><div class="cv acc">10,0</div><div class="cbar bes" style="height:44%"></div></div>
+            <div class="cbcol"><div class="cv">22,5</div><div class="cbar now" style="height:100%"></div></div>
+          </div>
+        </div>
+        <div class="bx">
+          <div>2025<span>3,4 GW instalados (REE)</span></div>
+          <div>2025 desglosado<span>3,3 bombeo · 0,1 baterías</span></div>
+          <div>2030 objetivo PNIEC<span>12,5 GW diario + 10 GW estacional</span></div>
+        </div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>Escalar baterías es fácil; escalar el sistema, no.</strong> El pipeline de baterías alcanza los <b>39.489 MW</b> de permisos y proyectos en curso (REE, feb-2026), pero solo unos <b>700 MW</b> tienen compromiso de construcción firme (Aurora Energy Research, ago-2026). Entre medias están las ayudas: <b>818,3 M€ del FEDER</b> para 126 proyectos (2,2 GW y 9,4 GWh) y las convocatorias del IDAE que dejaron 690 MW de baterías standalone y 88 MW térmicas adjudicadas en 2024.</p>
+          <p><strong>El bombeo vuelve a los planos.</strong> Tras décadas sin nuevas centrales reversibles, las subastas BORALMAC han adjudicado <b>11 proyectos por 265 M€ y 49.940 MWh</b> (≈4.000 MW de turbinación): Meirama, Baells, La Barca, Los Guájares, Grandas de Salime, la ampliación de la José María de Oriol de Alcántara o el Salto de Chira en Canarias. El bombeo sigue siendo la única tecnología capaz de almacenar días enteros a escala de red.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTABILIDAD -->
+  <section class="sec-est">
+    <div class="sec-h">
+      <span class="tag warn">Estabilidad</span>
+      <h2>Lo que costó el 28 de abril de 2025</h2>
+      <p>El apagón que desconectó España y Portugal de Europa reordenó la prioridad del sistema: primero la estabilidad, después la potencia.</p>
+    </div>
+    <div class="charts">
+      <div class="box">
+        <h3>Un sistema que se quedó solo</h3>
+        <p class="hint">Cronología oficial de la crisis y del nuevo marco de estabilidad.</p>
+        <div id="apagon"></div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>La causa raíz fue de control de tensión, no de falta de generación.</strong> El informe del comité técnico (17/06/2025) documenta una oscilación de 0,6 Hz durante más de cuatro minutos y fallos en el control de tensión de plantas conectadas a la red antes de que la península se separara de Europa a las 12:33. Los informes posteriores de ENTSO-E (oct-2025 y mar-2026) y la CNMC (mar-2026) completaron el cuadro; las comisiones parlamentarias siguen abiertas hasta abril de 2027.</p>
+          <p><strong>La respuesta normativa fue inmediata.</strong> El RD 997/2025 (05/11/2025) obliga a supervisar el control de tensión y agiliza los permisos de almacenamiento hibridado —plazos a la mitad y exención de evaluación ambiental—; la 3ª MAP (jul-2026) aprobó <b>615 M€</b> en 51 actuaciones de estabilidad (4 e-STATCOM, 8 compensadores síncronos, 20 reactancias) con un ahorro estimado de 450 M€ anuales en restricciones.</p>
+        </div>
+      </div>
+      <div class="box">
+        <h3>El precio de la estabilidad, en cifras</h3>
+        <p class="hint">Servicios de ajuste, inercia y capacidad firme.</p>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#e07b39"></i> Coste de servicios de ajuste 2025</span><span>3.812 M€ (+43%)</span></div><div class="tr"><div class="fl2" style="width:100%;background:linear-gradient(90deg,#e07b39,#f3b077)"></div></div></div>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#b45309"></i> Peso en el precio final 2025</span><span>15,78 €/MWh (18,9%)</span></div><div class="tr"><div class="fl2" style="width:65%;background:linear-gradient(90deg,#b45309,#e6b16a)"></div></div></div>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#7c5cbf"></i> Horas esperadas sin suministrar (LOLE) 2025</span><span>6,26 h (estándar: 1,5 h)</span></div><div class="tr"><div class="fl2" style="width:88%;background:linear-gradient(90deg,#7c5cbf,#b49ae6)"></div></div></div>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#0e9aa7"></i> Respuesta Activa de la Demanda · 2S 2026</span><span>1.775 MW adjudicados</span></div><div class="tr"><div class="fl2" style="width:55%"></div></div></div>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#16a34a"></i> Inercia de la península vs. Europa</span><span>≈50% inferior (REE)</span></div><div class="tr"><div class="fl2" style="width:50%;background:linear-gradient(90deg,#16a34a,#6ee79a)"></div></div></div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>La inercia es el recurso escaso.</strong> Con menos máquinas síncronas térmicas, la península se sostiene cada vez más con electrónica de potencia: la red necesita inercia o grid-forming adicional en el 6% del tiempo ya en 2026, y las simulaciones apuntan a un 30% menos de inercia en 2030 si no se compensa. De ahí que las baterías dejen de ser solo un negocio de arbitraje: los primeros proyectos con inversores grid-forming y los estudios de black-start entregados en 2026 apuntan a que la batería del futuro será también el apagón negro del sistema.</p>
+          <p><strong>El mercado de capacidad llega tarde y a lo grande.</strong> La Orden TED/966/2026 (BOE 17/09/2026) crea el mercado de capacidad peninsular: subastas pay-as-bid en €/MW firme/año, neutrales tecnológicamente y con tope de emisión de 550 g CO₂/kWh, para cubrir un riesgo de suministro de 6,26 horas frente al estándar de 1,5. La primera subasta aún no está convocada a 20 de octubre de 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRONOLOGIA -->
+  <section class="sec-tl">
+    <div class="sec-h">
+      <span class="tag">Cronología</span>
+      <h2>2025 – 2035: la década del almacenamiento</h2>
+      <p>Del apagón al objetivo de 22,5 GW, pasando por el mercado de capacidad y los últimos reactores.</p>
+    </div>
+    <div class="tl">
+      <div class="line"></div>
+      <div class="row">
+        <div class="it hot"><div class="yr">2025</div><div class="tt">El punto de inflexión</div><div class="dd">28-abr: apagón que aísla la península de Europa. Sep: PNIEC 2023-2030 fija 22,5 GW de almacenamiento y 81% renovable. Nov: RD 997/2025 agiliza baterías y refuerza el control de tensión. Cierra As Pontes.</div></div>
+        <div class="it hot"><div class="yr">2026</div><div class="tt">Primeras baterías y mercado de capacidad</div><div class="dd">Ene: Iberdrola pone en servicio las baterías de Alarcón (60 MW). Mar: 39.489 MW de baterías en el pipeline de REE. Jun: AAC de ENGIE en Tarifa (200 MW/800 MWh). Jul: 3ª MAP (615 M€) y nueva interconexión con Portugal (+1.000 MW). Sep: Orden que crea el mercado de capacidad.</div></div>
+        <div class="it hot"><div class="yr">2027</div><div class="tt">Gatika y las primeras obras grandes</div><div class="dd">Primer enlace del cable de Vizcaya a Francia (>50% de ejecución). Arranque previsto de obras en varios bombeos adjudicados (Meirama, Baells) y entrada de los primeros BESS rematados en construcción.</div></div>
+        <div class="it"><div class="yr">2028</div><div class="tt">Servicio de las baterías grandes</div><div class="dd">Palmosilla (Tarifa, 200 MW/800 MWh) entra en servicio; se completan las baterías del clúster de Sevilla y los proyectos de ENGIE y Repsol en Andalucía y Extremadura.</div></div>
+        <div class="it"><div class="yr">2029</div><div class="tt">FEDER al límite</div><div class="dd">Los 126 proyectos financiados con los 818,3 M€ del FEDER (2,2 GW y 9,4 GWh) deben estar ejecutados antes del 31 de diciembre. El mercado de capacidad arranca sus primeros contratos de largo plazo.</div></div>
+        <div class="it hot"><div class="yr">2030</div><div class="tt">22,5 GW y 81% renovable</div><div class="dd">Horizonte del PNIEC: 22,5 GW de almacenamiento (12,5 diario + 10 estacional), 81% de generación renovable, 62 GW eólicos y 76 GW fotovoltaicos. Cierre de Ascó I y Cofrentes.</div></div>
+        <div class="it"><div class="yr">2035</div><div class="tt">El final del programa nuclear</div><div class="dd">Cierre previsto de Vandellòs II y Trillo: España pasará de 7,4 GW a 3,2 GW de nuclear en 2030 y a cero en 2035, con 11.000 t de residuos gestionadas por Enresa.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fgrid">
+      <div>
+        <h4>Fuentes</h4>
+        <ul>
+          <li>Red Eléctrica / Redeia: Informe del Sistema Eléctrico 2025 (28/04/2026), potencia instalada a 31/12/2025 (11/03/2026), informes de mercado diario y módulos de generación</li>
+          <li>MITECO: PNIEC 2023-2030 (24/09/2024), RD 997/2025 (BOE 05/11/2025), Orden TED/966/2026 (BOE 17/09/2026), 3ª MAP (jul-2026), resoluciones BORALMAC y FEDER (2024-2026)</li>
+          <li>BOE: autorizaciones ambientales y de utilidad pública de almacenamiento 2026, prórroga de Almaraz Orden TED/864/2026 (14/08/2026)</li>
+          <li>Comité de análisis de la crisis del 28-abr-2025 (informe técnico 17/06/2025), informes ENTSO-E (2025-2026) y CNMC</li>
+          <li>Congreso y Senado: comisiones de investigación del apagón (expedientes 152/000006-8, prórroga sep-2026)</li>
+          <li>IDAE / Plan de Recuperación: convocatorias PRTR-BORALMAC (2024 y 2026)</li>
+          <li>Foro Nuclear: potencias de centrales hidráulicas y reversibles</li>
+          <li>pv magazine España, El Periódico de la Energía, Energías Renovables, UNITNAVE (inventario BESS), Aurora Energy Research</li>
+          <li>Empresas: Iberdrola, ENGIE, Repsol, Naturgy, Endesa, EDP, Enagás, Enresa</li>
+          <li>OMIE: informe anual 2025; UNEF (horas de precio cero 2026)</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Notas metodológicas</h4>
+        <p>Las coordenadas son municipales o aproximadas y sirven para localizar cada instalación en el mapa. Las potencias son brutas y pueden variar según la fuente: el bombeo «puro» del cierre de 2025 (3.331 MW, REE) excluye las centrales mixtas que también bombean, cuyo parque total ronda los 5,5 GW. Las baterías: 96 MW en servicio a 31/12/2025 según REE, frente a ≈260 MW estimados en prensa para agosto de 2026 (criterio de alcance distinto).</p>
+        <p>El «pipeline» de 39.489 MW de baterías incluye proyectos con permiso o en curso, sin decisión de inversión: solo unos 700 MW tienen compromiso de construcción firme (Aurora Energy Research, ago-2026). El objetivo PNIEC de 22,5 GW a 2030 (12,5 + 10 GW) se confirmó en el RD 997/2025.</p>
+        <p>Calendario nuclear: cierres de Ascó I y Cofrentes en 2030, Ascó II en 2032 y Vandellòs II y Trillo en 2035 (El País, ago-2026). Almaraz I y II quedaron prorrogadas hasta el 8 de junio de 2030 (Orden TED/864/2026). Algunos medios sitúan Ascó II y Vandellòs en 2031; se sigue la fuente más conservadora.</p>
+        <p>Proyectos anunciados y adjudicados (bombeos BORALMAC, BESS con autorización) están sujetos a permisos y decisión de inversión. Mapa: límites provinciales a partir de datos abiertos (GeoJSON), proyección Mercator con recuadro de Canarias no escala.</p>
+      </div>
+    </div>
+    <div class="cert">
+      <img class="sello" src="sello-europenguin.png" alt="Sello: certificado de calidad Europenguin 2026">
+      <div class="ct">
+        <b>Certificado de calidad · Europenguin</b>
+        <p>Cada dato de esta infografía —plantas, potencias, objetivos y cronología— procede de las fuentes citadas: informes de Red Eléctrica, resoluciones del BOE, comunicados de las empresas y prensa sectorial. Las estimaciones se marcan como tales; sin cifras inventadas.</p>
+        <p class="who">Datos verificados a 20 de octubre de 2026 · 65 puntos en el mapa · 24 fichas · 10 familias de fuentes</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="mapa-espana.js"></script>
+<script>
+/* ============ COLORES POR TECNOLOGÍA ============ */
+const TC={nuc:'#7c5cbf',gas:'#e07b39',car:'#6b7280',hid:'#2b7fc4',bom:'#0e9aa7',bes:'#16a34a',ren:'#c2880b',int:'#5b6470'};
+const TN={nuc:'Nuclear',gas:'Ciclo combinado (gas)',car:'Carbón',hid:'Hidráulica',bom:'Bombeo hidráulico',bes:'Baterías (BESS)',ren:'Renovable',int:'Interconector'};
+
+/* ============ DATOS ============ */
+const SITES=[
+ /* --- nuclear --- */
+ {id:'almaraz',n:'Central Nuclear de Almaraz',short:'Almaraz',city:'Almaraz · Cáceres',ccaa:'Extremadura',lat:39.808,lon:-5.697,t:'nuc',st:'operativa',stl:'En operación · prórroga 2030',
+  desc:'Dos reactores PWR de 1983 y 1984, la mayor central nuclear de España. En agosto de 2026 el Gobierno prorrogó su vida útil hasta el 8 de junio de 2030.',
+  f:[['Reactores','I y II · 2.094 MW'],['Vida útil','Hasta el 8-jun-2026 → 8-jun-2030 (Orden TED/864/2026)'],['Justificación','Seguridad de suministro y precio del gas'],['Desmantelamiento','Enresa adjudicó la ingeniería por 27,4 M€ (mar-2026)']],
+  src:'BOE (14/08/2026) · Enresa · El País',lp:[-13,-2,'l'],card:1},
+ {id:'asco',n:'Centrales nucleares de Ascó',short:'Ascó',city:'Ascó · Tarragona',ccaa:'Cataluña',lat:41.200,lon:0.569,t:'nuc',st:'operativa',stl:'En operación',
+  desc:'Dos reactores de 1984 y 1985 a orillas del Ebro. Ascó I cerrará en 2030 y Ascó II en 2032 según el calendario de cierres del PNIEC.',
+  f:[['Reactores','I y II · 2.060 MW'],['Cierres previstos','Ascó I: 2030 · Ascó II: 2032']],
+  src:'El País (16/08/2026) · MITECO',lp:[13,-4,'r'],card:1},
+ {id:'cofrentes',n:'Central Nuclear de Cofrentes',short:'Cofrentes',city:'Cofrentes · Valencia',ccaa:'C. Valenciana',lat:39.217,lon:-1.050,t:'nuc',st:'operativa',stl:'En operación · cierre 2030',
+  desc:'Reactor BWR de 1984 en el Turia. Su cierre está previsto para 2030, el mismo año que Almaraz y Ascó I.',
+  f:[['Reactor','1.092 MW'],['Cierre previsto','2030']],
+  src:'El País (16/08/2026)',lp:null},
+ {id:'trillo',n:'Central Nuclear de Trillo',short:'Trillo',city:'Trillo · Guadalajara',ccaa:'Castilla-La Mancha',lat:40.701,lon:-2.622,t:'nuc',st:'operativa',stl:'En operación · cierre 2035',
+  desc:'La más moderna del parque español (1988), junto al embalse del Tajo. Cierre previsto en 2035.',
+  f:[['Reactor','1.005 MW'],['Cierre previsto','2035']],
+  src:'MITECO · El País',lp:null},
+ {id:'vandellos',n:'Central Nuclear de Vandellòs II',short:'Vandellòs II',city:'Vandellòs · Tarragona',ccaa:'Cataluña',lat:40.951,lon:0.867,t:'nuc',st:'operativa',stl:'En operación · cierre 2035',
+  desc:'Reactor PWR de 1987. Vandellòs I (GR-2) ya está en desmantelamiento; II seguirá hasta 2035.',
+  f:[['Reactor','1.087 MW'],['Cierre previsto','2035'],['Situación','Última nuclear catalana en servicio tras el cierre de Vandellòs I']],
+  src:'MITECO · Foro Nuclear',lp:[13,6,'r']},
+
+ /* --- ciclo combinado --- */
+ {id:'escatron',n:'Ampliación de la CCGT de Escatrón',short:'Escatrón (ampliación)',city:'Escatrón · Zaragoza',ccaa:'Aragón',lat:41.297,lon:-0.340,t:'gas',st:'obra',stl:'Ampliación autorizada',
+  desc:'Repsol amplía la CCGT de Escatrón de 804 a 1.538 MW con hibridación: la mayor ampliación de gas del país en una central existente.',
+  f:[['Capacidad','804 → 1.538 MW'],['Titular','Repsol'],['Base legal','BOE B-2026-22142'],['Hibridación','Combinación con generación renovable en el mismo emplazamiento']],
+  src:'BOE · El Periódico de la Energía',lp:[13,2,'r'],card:1},
+ {id:'sagunto',n:'CCGT de Sagunto',short:'Sagunto (gas)',city:'Sagunto · Valencia',ccaa:'C. Valenciana',lat:39.643,lon:-0.233,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Una de las mayores centrales de gas de España, junto al puerto y la zona industrial de Sagunto. A escasos kilómetros de la gigafactoría de baterías de PowerCo-Gotion.',
+  f:[['Capacidad','≈1.200 MW'],['Titular','Naturgy y otros'],['Contexto','Emplazamiento industrial con puerto']],
+  src:'OpenInfraMap · comunicados',lp:null},
+ {id:'arcos',n:'CCGT de Arcos',short:'Arcos',city:'Arcos de la Frontera · Cádiz',ccaa:'Andalucía',lat:36.673,lon:-5.816,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Complejo de ciclo combinado de la bahía gaditana, uno de los mayores del sur peninsular.',
+  f:[['Capacidad','≈1.585 MW (estimación)'],['Tecnología','Ciclo combinado de gas natural']],
+  src:'OpenInfraMap · GEM',lp:null},
+ {id:'algeciras',n:'Complejo de Bahía de Algeciras',short:'Algeciras (gas)',city:'San Roque · Cádiz',ccaa:'Andalucía',lat:36.192,lon:-5.416,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Núcleo de generación de gas más denso de la península: varias centrales de ciclo combinado alrededor de la bahía de Algeciras.',
+  f:[['Capacidad','≈820 MW (una de las plantas)'],['Contexto','Polo petroquímico y puerto']],
+  src:'GEM · OpenInfraMap',lp:null},
+ {id:'palos',n:'CCGT de Palos',short:'Palos',city:'Palos de la Frontera · Huelva',ccaa:'Andalucía',lat:37.184,lon:-6.887,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Ciclo combinado de 1.167 MW alimentado por el gasoducto de la costa onubense.',
+  f:[['Capacidad','1.167 MW'],['Titular','Naturgy']],
+  src:'OpenInfraMap',lp:null},
+ {id:'aceca',n:'CCGT de Aceca',short:'Aceca',city:'Villamayor de Cuenca · Cuenca',ccaa:'Castilla-La Mancha',lat:39.944,lon:-3.855,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Central de ciclo combinado en el corredor del Tajo, referente del sistema central desde los años noventa.',
+  f:[['Capacidad','≈760–800 MW'],['Contexto','Conexión 400 kV al centro peninsular']],
+  src:'GEM · OpenInfraMap',lp:null},
+ {id:'castejon',n:'CCGT de Castejón',short:'Castejón',city:'Castejón · Navarra',ccaa:'Navarra',lat:42.337,lon:-1.827,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Gas natural en el Ebro navarro: la central de referencia del sistema navarro tras el cierre térmico.',
+  f:[['Capacidad','≈840 MW (plantas 1 y 3)'],['Contexto','Nudo de conexión con Aragón']],
+  src:'OpenInfraMap',lp:[13,-8,'r']},
+ {id:'escombreras',n:'Complejo de Escombreras',short:'Escombreras',city:'Cartagena · Murcia',ccaa:'Región de Murcia',lat:37.568,lon:-0.968,t:'gas',st:'operativa',stl:'En operación',
+  desc:'Tres centrales de gas en el valle de Escombreras: el mayor clúster de generación eléctrica del sureste.',
+  f:[['Capacidad','> 3 GW entre las tres plantas'],['Contexto','Polo industrial y puerto de Cartagena']],
+  src:'OpenInfraMap (sin fecha)',lp:null},
+ {id:'aspontes-gas',n:'CCGT de As Pontes',short:'As Pontes (gas)',city:'As Pontes de García Rodríguez · A Coruña',ccaa:'Galicia',lat:43.450,lon:-7.864,t:'gas',st:'operativa',stl:'Operativa (ex-carbón)',
+  desc:'La antigua térmica de carbón de As Pontes, que dejó de generar en 2023, dio paso a un ciclo combinado de 856 MW: el ejemplo de conversión del respaldo térmico gallego.',
+  f:[['Capacidad','856 MW'],['Historia','Térmica de carbón → CCGT'],['Carbón','Cierre autorizado en 2024']],
+  src:'El Mundo (23/09/2023) · ITJ · GEM',lp:null},
+
+ /* --- carbón en cierre --- */
+ {id:'soto',n:'Soto de Ribera G3',short:'Soto de Ribera',city:'Ribera de Arriba · Asturias',ccaa:'Asturias',lat:43.312,lon:-5.874,t:'car',st:'cierre',stl:'Conversión a gas en curso',
+  desc:'La última central de carbón peninsular en servicio. El MITECO no autorizó su cierre (dic-2025) y EDP inició en mayo de 2026 la conversión de la unidad G3 a gas.',
+  f:[['Capacidad','≈855 MW'],['Estado','Conversión a gas iniciada (may-2026)'],['Contexto','Único carbón peninsular operativo']],
+  src:'LNE · edp.com · GEM (13/10/2026)',lp:[-13,-2,'l'],card:1},
+ {id:'abonno',n:'Central térmica de Aboño',short:'Aboño',city:'Carreño · Asturias',ccaa:'Asturias',lat:43.553,lon:-5.722,t:'car',st:'cierre',stl:'Carbón abandonado',
+  desc:'Aboño 2 dejó de quemar carbón en julio de 2025 y pasó a turbina de vapor (562 MW). Aboño 1 está en desmantelamiento; EDP plantea el «valle asturiano del hidrógeno verde».',
+  f:[['Capacidad','562 MW (Aboño 2, a vapor)'],['Aboño 1','Desmantelamiento (40 meses)'],['Futuro','Proyecto de hidrógeno verde en el emplazamiento']],
+  src:'REE (11/03/2026) · LNE · edp.com',lp:null,card:1},
+ {id:'compostilla',n:'Compostilla I y II',short:'Compostilla',city:'Cubillos del Sil · León',ccaa:'Castilla y León',lat:42.510,lon:-6.638,t:'car',st:'cierre',stl:'En desmantelamiento',
+  desc:'Las chimeneas de la antigua térmica leonesa se volaron en febrero de 2026 tras 48 meses de desmantelamiento: el símbolo del fin del carbón en El Bierzo.',
+  f:[['Capacidad histórica','1.317 MW'],['Desmantelamiento','48 meses · chimeneas voladas feb-2026']],
+  src:'Endesa · El Bierzo',lp:null},
+ {id:'andorra-t',n:'Térmica de Andorra',short:'Andorra',city:'Andorra · Teruel',ccaa:'Aragón',lat:40.998,lon:-0.383,t:'car',st:'cierre',stl:'En desmantelamiento',
+  desc:'La gran térmica maestra del Maestrazgo, cerrada y en desmantelamiento tras décadas como columna vertebral del sistema aragonés.',
+  f:[['Capacidad histórica','1.101 MW'],['Estado','Desmantelamiento']],
+  src:'Endesa · Wikipedia',lp:[-13,0,'l']},
+ {id:'carboneras',n:'Litoral de Almería · Carboneras',short:'Carboneras',city:'Carboneras · Almería',ccaa:'Andalucía',lat:36.978,lon:-1.905,t:'car',st:'cierre',stl:'Desmantelada',
+  desc:'La térmica almeriense terminó con la voladura de su chimenea en octubre de 2025 y la desconexión en diciembre: fin del carbón en el litoral mediterráneo.',
+  f:[['Capacidad histórica','≈1.000 MW'],['Chimenea','Volada 30/10/2025'],['Desconexión','16/12/2025']],
+  src:'Endesa',lp:null},
+ {id:'losbarrios',n:'Térmica de Los Barrios',short:'Los Barrios',city:'Los Barrios · Cádiz',ccaa:'Andalucía',lat:36.183,lon:-5.420,t:'car',st:'cierre',stl:'Retirada',
+  desc:'Una de las mayores térmicas de carbón de España, en la bahía de Algeciras. Retirada según los inventarios internacionales; Endesa cerrará todas sus carbones en 2027.',
+  f:[['Capacidad histórica','1.390 MW'],['Contexto','Convive con el gas de la bahía']],
+  src:'GEM · endesa.com',lp:null},
+
+ /* --- bombeo existente --- */
+ {id:'lamuela',n:'Cortes–La Muela',short:'La Muela',city:'Cortes de Pallás · Valencia',ccaa:'C. Valenciana',lat:39.242,lon:-0.940,t:'bom',st:'operativa',stl:'En operación · bombeo',
+  desc:'La mayor central reversible de España: 1.390 MW de La Muela más los 240 MW de Cortes II. Bombea de noche con sobrantes y turbinar en las horas de punta.',
+  f:[['Capacidad','1.390 MW (La Muela) + 240 MW (Cortes II)'],['Tipo','Bombeo puro'],['Ampliación','+605 MW propuestos (sep-2026)'],['Embalse','Valle de Júcar']],
+  src:'Foro Nuclear · Iberdrola · pv magazine',lp:[13,4,'r'],card:1},
+ {id:'aldeadavila',n:'Aldeadávila I y II',short:'Aldeadávila',city:'Aldeadávila de la Ribera · Salamanca',ccaa:'Castilla y León',lat:41.219,lon:-6.620,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'La joya hidráulica del Duero: 1.308 MW entre ambas unidades, con Aldeadávila II reversible (428 MW). Trabaja como «batería» natural del sistema desde los años ochenta.',
+  f:[['Capacidad','1.308 MW'],['Tipo','Mixta: generación + bombeo'],['Ampliación','+268 MW propuestos (sep-2026)']],
+  src:'Foro Nuclear · Iberdrola',lp:[-13,-2,'l'],card:1},
+ {id:'villarino',n:'Villarino (Almendra)',short:'Villarino',city:'Villarino de los Aires · Salamanca',ccaa:'Castilla y León',lat:41.270,lon:-6.468,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'Central de 810 MW sobre el embalse de Almendra, pieza clave del eje reversible del Duero salmantino.',
+  f:[['Capacidad','≈810 MW'],['Tipo','Mixta']],
+  src:'Foro Nuclear',lp:null},
+ {id:'saucelle',n:'Saucelle I y II',short:'Saucelle',city:'Saucelle · Salamanca',ccaa:'Castilla y León',lat:41.048,lon:-6.751,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'521 MW en la frontera portuguesa: Saucelle II es una de las centrales reversibles puras del Duero.',
+  f:[['Capacidad','251 + 269 MW'],['Tipo','Saucelle II: bombeo puro']],
+  src:'Foro Nuclear',lp:null},
+ {id:'alcantara',n:'José María de Oriol · Alcántara',short:'Alcántara',city:'Alcántara · Cáceres',ccaa:'Extremadura',lat:39.721,lon:-6.887,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'957 MW sobre el Tajo, la mayor central hidráulica extremeña. Junto a ella se proyecta la nueva reversible de 440 MW.',
+  f:[['Capacidad','957 MW'],['Tipo','Mixta'],['Ampliación','José María de Oriol II (BOREAL): 440 MW adjudicados']],
+  src:'Foro Nuclear · BOE',lp:null,card:1},
+ {id:'valdecenas',n:'Valdecañas',short:'Valdecañas',city:'Valdecañas de Tajo · Cáceres',ccaa:'Extremadura',lat:39.759,lon:-5.620,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'249 MW junto al embalse de Valdecañas, en la cuenca del Tajo, con doble uso de generación y bombeo.',
+  f:[['Capacidad','≈249 MW'],['Tipo','Mixta']],
+  src:'Foro Nuclear',lp:[13,6,'r']},
+ {id:'encantada',n:'Tajo de la Encantada',short:'Encantada',city:'Ardales · Málaga',ccaa:'Andalucía',lat:36.878,lon:-4.847,t:'bom',st:'operativa',stl:'En operación · bombeo',
+  desc:'420 MW de bombeo puro en el Guadalhorce: la gran «batería» de Málaga, con el Embalse del Chorro como reservorio inferior.',
+  f:[['Capacidad','420 MW'],['Tipo','Bombeo puro']],
+  src:'Foro Nuclear',lp:[-13,0,'l']},
+ {id:'sallente',n:'Estany Gento–Sallente',short:'Sallente',city:'La Torre de Capdella · Lleida',ccaa:'Cataluña',lat:42.421,lon:0.982,t:'bom',st:'operativa',stl:'En operación · bombeo',
+  desc:'400 MW de bombeo en el Pallars Jussá: dos embalses en lo alto del Pirineo catalán que igualan la función de una batería de 400 MW.',
+  f:[['Capacidad','400 MW'],['Tipo','Bombeo puro']],
+  src:'Foro Nuclear',lp:[13,-6,'r']},
+ {id:'aguayo',n:'Aguayo',short:'Aguayo',city:'San Miguel de Aguayo · Cantabria',ccaa:'Cantabria',lat:43.056,lon:-4.024,t:'bom',st:'operativa',stl:'En operación · bombeo',
+  desc:'360 MW de bombeo puro en las montañas cántabras, conectada al sistema por el valle del Pas.',
+  f:[['Capacidad','360 MW'],['Tipo','Bombeo puro']],
+  src:'Foro Nuclear',lp:[-13,-6,'l']},
+ {id:'sanesteban',n:'San Esteban',short:'San Esteban',city:'Nogueira de Ramuín · Ourense',ccaa:'Galicia',lat:42.403,lon:-7.706,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'589 MW sobre el Sil gallego (San Esteban I y II), el gran regulador hidráulico del Miño-Sil.',
+  f:[['Capacidad','412 + 177 MW'],['Tipo','Mixta']],
+  src:'Foro Nuclear',lp:null},
+ {id:'mequinenza',n:'Mequinenza',short:'Mequinenza',city:'Mequinenza · Zaragoza',ccaa:'Aragón',lat:41.376,lon:0.304,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'384 MW en el embalse del Cinca, donde se vacía la presa histórica de Mequinenza: patrimonio industrial y estabilización del Ebro.',
+  f:[['Capacidad','384 MW'],['Tipo','Mixta'],['Patrimonio','El pueblo viejo quedó sumergido; museo abierto']],
+  src:'Foro Nuclear',lp:null},
+ {id:'cedillo',n:'Cedillo',short:'Cedillo',city:'Cedillo · Cáceres',ccaa:'Extremadura',lat:39.652,lon:-7.500,t:'bom',st:'operativa',stl:'En operación · mixta',
+  desc:'380 MW en el Tajo internacional, en la frontera con Portugal, con doble uso de generación y bombeo.',
+  f:[['Capacidad','380 MW'],['Tipo','Mixta'],['Vecindad','A escasos km de la gigafactoría de Navalmoral']],
+  src:'Foro Nuclear',lp:null},
+ {id:'belesar',n:'Belesar',short:'Belesar',city:'Chantada · Lugo',ccaa:'Galicia',lat:42.611,lon:-7.811,t:'hid',st:'operativa',stl:'En operación',
+  desc:'310 MW sobre el Miño gallego: hidráulica convencional de gran regulación para el noroeste peninsular.',
+  f:[['Capacidad','310 MW'],['Tipo','Convencional']],
+  src:'Foro Nuclear',lp:null},
+
+ /* --- bombeo nuevo --- */
+ {id:'alcantara2',n:'José María de Oriol II (BOREAL)',short:'Alcántara II',city:'Alcántara · Cáceres',ccaa:'Extremadura',lat:39.700,lon:-6.850,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'Nueva central reversible de 440 MW junto a la existente, con 44,9 M€ de ayuda y declaración de impacto ambiental favorable desde septiembre de 2024.',
+  f:[['Capacidad','440 MW'],['Ayuda','44,9 M€ (BORALMAC-1)'],['DIA','Favorable (BOE, 20/09/2024)']],
+  src:'BOE · planderecuperacion.gob.es',lp:null,card:1},
+ {id:'meirama',n:'Bombeo de Meirama',short:'Meirama',city:'Cerceda · A Coruña',ccaa:'Galicia',lat:43.163,lon:-8.504,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'La antigua central térmica de Meirama dará paso a una reversible de 440 MW y 3.520 MWh con 30 M€ de ayuda: conversión de carbón en almacenamiento.',
+  f:[['Capacidad','440 MW · 3.520 MWh'],['Ayuda','30 M€ (BORALMAC-1)'],['Contexto','Reutiliza la infraestructura de la térmica']],
+  src:'BOE (IP 2025) · planderecuperacion.gob.es',lp:[-13,-4,'l'],card:1},
+ {id:'baells',n:'Bombeo de Baells',short:'Baells',city:'Cercs y Vilada · Barcelona',ccaa:'Cataluña',lat:42.146,lon:1.861,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'545 MW y 4.290 MWh sobre el embalse de la Baells, en el Berguedà: la mayor adjudicación de la convocatoria BORALMAC-2.',
+  f:[['Capacidad','545 MW · 4.290 MWh'],['Ayuda','6 M€ (BORALMAC-2)']],
+  src:'planderecuperacion.gob.es',lp:null,card:1},
+ {id:'laguajares',n:'Bombeo de Los Guájares',short:'Los Guájares',city:'Los Guájares · Granada',ccaa:'Andalucía',lat:36.849,lon:-3.599,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'357 MW y 2.969 MWh en la Alpujarra granadina, con 23,1 M€ de ayuda: almacenamiento de escala diaria para el sur peninsular.',
+  f:[['Capacidad','357 MW · 2.969 MWh'],['Ayuda','23,1 M€ (BORALMAC-2)']],
+  src:'planderecuperacion.gob.es',lp:[-13,4,'l'],card:1},
+ {id:'labarca',n:'Bombeo de La Barca',short:'La Barca',city:'Tineo y Belmonte de Miranda · Asturias',ccaa:'Asturias',lat:43.309,lon:-6.492,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'354 MW y 4.739 MWh en el Nalón asturiano, con la mayor ayuda de la convocatoria: 48,8 M€.',
+  f:[['Capacidad','354 MW · 4.739 MWh'],['Ayuda','48,8 M€ (BORALMAC-2)']],
+  src:'planderecuperacion.gob.es',lp:null},
+ {id:'grandas',n:'Grandas de Salime (ampliación)',short:'Salime (ampliación)',city:'Grandas de Salime · Asturias',ccaa:'Asturias',lat:43.188,lon:-6.919,t:'bom',st:'anuncio',stl:'Adjudicada (BORALMAC)',
+  desc:'La histórica presa del Navia incorpora bombeo: 247 MW adjudicados (45 M€) más una ampliación propuesta de +160 MW.',
+  f:[['Capacidad','247 MW · 3.810 MWh (+160 MW propuestos)'],['Ayuda','45 M€ (BORALMAC-2)']],
+  src:'planderecuperacion.gob.es · pv magazine',lp:null},
+ {id:'piorno',n:'Bombeo de Piorno II',short:'Piorno II',city:'Piornal · Cáceres',ccaa:'Extremadura',lat:40.118,lon:-5.672,t:'bom',st:'anuncio',stl:'En información pública',
+  desc:'430 MW de nueva reversible en la sierra extremeña de Gredos, en tramitación desde agosto de 2026.',
+  f:[['Capacidad','430 MW (prevista)'],['Estado','Solicitud de información pública (15/08/2026)']],
+  src:'pv magazine (08/09/2026)',lp:[13,2,'r']},
+ {id:'chira',n:'Salto de Chira',short:'Chira',city:'San Bartolomé de Tirajana · Gran Canaria',ccaa:'Canarias',lat:27.850,lon:-15.588,t:'bom',st:'obra',stl:'En obra',
+  desc:'200 MW y 3.500 MWh de bombeo en Gran Canaria, con 90 M€ del FEDER: el mayor proyecto de almacenamiento del archipiélago.',
+  f:[['Capacidad','200 MW · 3.500 MWh'],['Ayuda','90 M€ FEDER'],['Contexto','Estabiliza el sistema aislado canario']],
+  src:'REE · Energías Renovables (28/02/2026)',lp:null,card:1},
+
+ /* --- baterías en operación --- */
+ {id:'alarcon',n:'Baterías de Alarcón (Romeral y Olmedilla)',short:'Alarcón (baterías)',city:'Alarcón · Cuenca',ccaa:'Castilla-La Mancha',lat:39.546,lon:-2.087,t:'bes',st:'operativa',stl:'En operación · 2026',
+  desc:'Las primeras baterías de gran tamaño en servicio del sistema eléctrico español: 60 MW / 120 MWh de Iberdrola junto a sus centrales hidráulicas del Júcar, con ayuda del PERTE ERHA.',
+  f:[['Capacidad','60 MW / 120 MWh (dos sistemas)'],['Titular','Iberdrola'],['Servicio','23/01/2026'],['Ayuda','PERTE ERHA (37,5 M€ para 6 baterías)']],
+  src:'Iberdrola (23/01/2026)',lp:[13,-2,'r'],card:1},
+ {id:'tebar',n:'Las Lomillas (híbrido)',short:'Las Lomillas',city:'Tébar · Cuenca',ccaa:'Castilla-La Mancha',lat:39.497,lon:-2.166,t:'bes',st:'operativa',stl:'En operación · 2026',
+  desc:'Baterías de 36 MW / 72 MWh hibridadas con una planta solar de 122 MW: el modelo de «renovable + almacenamiento» que se extiende por toda España.',
+  f:[['Capacidad','36 MW / 72 MWh + 122 MW FV'],['Ayuda','6,2 M€ IDAE'],['Servicio','30/07/2026']],
+  src:'pv magazine (30/07/2026) · IDAE',lp:null,card:1},
+ {id:'canarias-bess',n:'Baterías de Naturgy · Gran Canaria',short:'Baterías Canarias',city:'Ingenio · Las Palmas',ccaa:'Canarias',lat:27.930,lon:-15.424,t:'bes',st:'operativa',stl:'En servicio 2026',
+  desc:'Cuatro proyectos de baterías en Gran Canaria (22,5 MW / 78 MWh en total), entre ellos El Escobar (Ingenio) y Piletas I (Agüimes), para estabilizar el sistema aislado.',
+  f:[['Capacidad','22,5 MW / 78 MWh en 4 proyectos'],['Titular','Naturgy'],['Sistema','Aislado canario']],
+  src:'Naturgy (15/07/2026)',lp:[-13,-6,'l']},
+
+ /* --- baterías anunciadas --- */
+ {id:'palmosilla',n:'Palmosilla (ENGIE)',short:'Palmosilla',city:'Tarifa · Cádiz',ccaa:'Andalucía',lat:36.013,lon:-5.605,t:'bes',st:'anuncio',stl:'Autorizada · servicio 2028',
+  desc:'200 MW / 800 MWh de baterías independientes en Tarifa, con autorización ambiental concedida en junio de 2026: uno de los mayores BESS de España.',
+  f:[['Capacidad','200 MW / 800 MWh'],['Titular','ENGIE'],['Autorización','AAC BOE 04/06/2026'],['Calendario','Obras 2027 · servicio 2028'],['Ayuda','70 M€ FEDER (con Cerrillo)']],
+  src:'ENGIE (08/04/2026) · BOE',lp:[13,2,'r'],card:1},
+ {id:'cerrillo',n:'Cerrillo (ENGIE)',short:'Cerrillo',city:'Álora · Málaga',ccaa:'Andalucía',lat:36.824,lon:-4.706,t:'bes',st:'anuncio',stl:'Autorizada',
+  desc:'78 MW / 312 MWh de baterías independientes en el Guadalhorce malagueño, con autorización ambiental en junio de 2026.',
+  f:[['Capacidad','78 MW / 312 MWh'],['Titular','ENGIE'],['Autorización','AAC BOE 05/06/2026']],
+  src:'ENGIE · BOE',lp:null,card:1},
+ {id:'babor',n:'Babor 7 (Tarifa)',short:'Babor 7',city:'Tarifa · Cádiz',ccaa:'Andalucía',lat:36.020,lon:-5.595,t:'bes',st:'anuncio',stl:'Autorizada · servicio 2029',
+  desc:'66 MW / 198 MWh en el mismo emplazamiento tarifeño; ENGIE compró 66 MW / 264 MWh en Tarifa con servicio previsto para 2029.',
+  f:[['Capacidad','66 MW / 198 MWh'],['Titular','ENGIE'],['Autorización','AAP BOE 17/06/2026']],
+  src:'BOE · ENGIE (04/09/2026)',lp:null},
+ {id:'tagus2',n:'Tagus 2 HBESS',short:'Tagus 2',city:'Ocaña y Ontígola · Toledo',ccaa:'Castilla-La Mancha',lat:39.959,lon:-3.501,t:'bes',st:'anuncio',stl:'Autorizada (oct-2026)',
+  desc:'176 MW / 662 MWh en la cuenca del Tajo toledano: una de las últimas autorizaciones publicadas en el BOE de 2026.',
+  f:[['Capacidad','176 MW / 662 MWh'],['Autorización','AAP+AAC BOE 16/10/2026']],
+  src:'BOE (16/10/2026)',lp:[-13,-2,'l'],card:1},
+ {id:'batcedillo',n:'BAT Cedillo',short:'BAT Cedillo',city:'Cedillo · Cáceres',ccaa:'Extremadura',lat:39.680,lon:-7.460,t:'bes',st:'anuncio',stl:'En tramitación',
+  desc:'215 MW de baterías junto a la central reversible de Cedillo: el binomio «bombeo + baterías» extremeño.',
+  f:[['Capacidad','215 MW'],['Estado','Solicitud AAP+AC+UP (4T 2025)']],
+  src:'BOE · pv magazine (12/01/2026)',lp:null},
+ {id:'valdesolar',n:'Valdesolar (Repsol)',short:'Valdesolar',city:'Valdecaballeros · Badajoz',ccaa:'Extremadura',lat:39.243,lon:-5.190,t:'bes',st:'anuncio',stl:'En información pública',
+  desc:'200 MW / 413 MWh de baterías en el polo solar extremeño, con información pública abierta en marzo de 2026 y posible servicio en 2027.',
+  f:[['Capacidad','200 MW / 413 MWh'],['Titular','Repsol'],['Calendario','Posible fin de obras 2027']],
+  src:'Hoy (23/03/2026)',lp:[-13,0,'l'],card:1},
+ {id:'trujillo',n:'SPK Trujillo',short:'Trujillo',city:'Trujillo · Cáceres',ccaa:'Extremadura',lat:39.461,lon:-5.882,t:'bes',st:'anuncio',stl:'En tramitación',
+  desc:'109 MW de baterías en la comarca trujillana, en tramitación desde julio de 2026.',
+  f:[['Capacidad','109 MW'],['Estado','Solicitud AAP+AC (jul-2026)']],
+  src:'pv magazine (17/07/2026)',lp:null},
+ {id:'orcoyen',n:'Orcoyen Almacena',short:'Orcoyen',city:'Orcoyen · Navarra',ccaa:'Navarra',lat:42.824,lon:-1.702,t:'bes',st:'anuncio',stl:'En tramitación',
+  desc:'74 MW de baterías independientes en el área metropolitana de Pamplona, con solicitud de autorización ambiental desde julio de 2026.',
+  f:[['Capacidad','74 MW'],['Estado','Solicitud AAP+DIA (jul-2026)']],
+  src:'pv magazine (17/07/2026)',lp:null},
+ {id:'azor',n:'Azor Solar',short:'Azor',city:'Paracuellos de Jarama · Madrid',ccaa:'Madrid',lat:40.505,lon:-3.532,t:'bes',st:'anuncio',stl:'Autorizada (oct-2026)',
+  desc:'69 MW de baterías al norte de Madrid, autorizada en el BOE de octubre de 2026.',
+  f:[['Capacidad','69 MW'],['Autorización','AAP BOE 19/10/2026']],
+  src:'pv magazine (19/10/2026)',lp:[13,-8,'r']},
+ {id:'bruc',n:'Clúster Bruc · Sevilla',short:'Clúster Bruc',city:'Alcalá de Guadaíra · Sevilla',ccaa:'Andalucía',lat:37.338,lon:-5.844,t:'bes',st:'anuncio',stl:'Autorizadas (2026)',
+  desc:'Seis baterías de 39,6 MW / 140 MWh cada una (238 MW en total) autorizadas en julio de 2026 junto a la huerta solar de Don Rodrigo: el mayor clúster BESS del sur.',
+  f:[['Capacidad','6 × 39,6 MW / 140 MWh ≈ 238 MW'],['Autorización','BOE-A-2026-15833 (20/07/2026)'],['Vecindad','Don Rodrigo II y III en Utrera y Carmona']],
+  src:'BOE · pv magazine (17/07/2026)',lp:null,card:1},
+ {id:'andujar',n:'BESS Andújar',short:'Andújar',city:'Andújar · Jaén',ccaa:'Andalucía',lat:38.039,lon:-4.051,t:'bes',st:'anuncio',stl:'Consulta pública',
+  desc:'120 MW de baterías en el Alto Guadalquivir, en consulta pública de MITECO con cierre en noviembre de 2026.',
+  f:[['Capacidad','120 MW'],['Estado','Consulta pública (cierre 16/11/2026)']],
+  src:'MITECO (sede electrónica, oct-2026)',lp:null},
+ {id:'picón',n:'BESS Picón II',short:'Picón II',city:'Porzuna · Ciudad Real',ccaa:'Castilla-La Mancha',lat:39.147,lon:-4.154,t:'bes',st:'anuncio',stl:'Autorizada',
+  desc:'20 MW / 47 MWh de Naturgy en la mancha manchega, autorizada en febrero de 2026.',
+  f:[['Capacidad','20 MW / 47 MWh'],['Titular','Naturgy'],['Autorización','AAP+AAC BOE 26/02/2026']],
+  src:'BOE · pv magazine',lp:null},
+ {id:'tabernas',n:'BESS Tabernas II',short:'Tabernas II',city:'Tabernas · Almería',ccaa:'Andalucía',lat:37.050,lon:-2.391,t:'bes',st:'anuncio',stl:'Autorizada',
+  desc:'20 MW de baterías de Naturgy en el desierto de Tabernas, ampliando la presencia de la compañía en el sureste.',
+  f:[['Capacidad','20 MW'],['Titular','Naturgy']],
+  src:'BOE (oct-2026)',lp:null},
+ {id:'talayuela',n:'Talayuela II BESS',short:'Talayuela II',city:'Talayuela · Cáceres',ccaa:'Extremadura',lat:39.986,lon:-5.610,t:'bes',st:'anuncio',stl:'Autorizada',
+  desc:'22 MW de baterías junto a una de las mayores huertas solares de Europa, en el campo de Talayuela.',
+  f:[['Capacidad','22 MW'],['Autorización','AAP+AAC (17/06/2026)']],
+  src:'Oropesa Solar · BOE',lp:[13,2,'r']},
+
+ /* --- renovables --- */
+ {id:'pizarro',n:'FV Francisco Pizarro',short:'Francisco Pizarro',city:'Torrecillas de la Tiesa · Cáceres',ccaa:'Extremadura',lat:39.445,lon:-5.613,t:'ren',st:'operativa',stl:'En operación',
+  desc:'590 MW fotovoltaicos: la mayor planta solar de España cuando se completó, en el campo cacereño.',
+  f:[['Capacidad','590 MW'],['Tecnología','Solar fotovoltaica'],['Contexto','Extremadura, el mayor clúster solar del país']],
+  src:'Iberdrola · sector',lp:null,card:1},
+ {id:'nunezbalboa',n:'FV Núñez de Balboa',short:'Núñez de Balboa',city:'Usagre · Badajoz',ccaa:'Extremadura',lat:38.359,lon:-6.318,t:'ren',st:'operativa',stl:'En operación',
+  desc:'500 MW solares con baterías asociadas en Badajoz: el modelo de planta con almacenamiento que el PNIEC quiere multiplicar.',
+  f:[['Capacidad','500 MW + baterías'],['Tecnología','Solar fotovoltaica con almacenamiento']],
+  src:'Iberdrola',lp:[13,4,'r'],card:1},
+ {id:'donrodrigo',n:'Don Rodrigo II · clúster BESS',short:'Don Rodrigo',city:'Utrera · Sevilla',ccaa:'Andalucía',lat:37.183,lon:-5.780,t:'ren',st:'anuncio',stl:'Ampliación en tramitación',
+  desc:'La huerta solar de Don Rodrigo suma fases con baterías: Don Rodrigo II y Bianor (68 MW de BESS) y Don Rodrigo III (39,6 MW) en Carmona.',
+  f:[['Baterías','39,6 MW (III) + 39,6 + 28,4 MW (II y Bianor)'],['Estado','Solicitudes (jul-2026)']],
+  src:'pv magazine (17/07/2026)',lp:null},
+
+ /* --- interconectores --- */
+ {id:'beariz',n:'Beariz–Viana do Castelo',short:'Beariz (PT)',city:'Beariz · Orense',ccaa:'Galicia',lat:42.121,lon:-7.966,t:'int',st:'operativa',stl:'Inaugurada 02/07/2026',
+  desc:'Nueva interconexión de 400 kV con Portugal, +1.000 MW: la capacidad España→Portugal sube a 4.200 MW y la total a diez interconexiones.',
+  f:[['Potencia','+1.000 MW (4.200 ES→PT · 3.500 PT→ES)'],['Inauguración','02/07/2026'],['Contexto','Mayor intercambio eléctrico peninsular']],
+  src:'REE · Comisión Europea (02/07/2026)',lp:[-13,2,'l'],card:1},
+ {id:'gatika',n:'Gatika–Cubnezais (Golfo de Vizcaya)',short:'Gatika (FR)',city:'Gatika · Vizcaya',ccaa:'País Vasco',lat:43.363,lon:-1.604,t:'int',st:'obra',stl:'En obra · servicio 2027-28',
+  desc:'El cable submarino de Vizcaya a Francia, con más del 50% de ejecución: elevará la interconexión España-Francia de 2.800 a 5.000 MW, frente al 2,8% actual de potencia interconectada.',
+  f:[['Potencia','2 × 1.500 MW previstos'],['Inversión','≈3.100 M€'],['Avance','>50% (1S 2026)'],['Capacidad ES-FR','2.800 → 5.000 MW']],
+  src:'Redeia · El Periódico de la Energía (09/2026)',lp:[13,-8,'r'],card:1},
+ {id:'sll',n:'Baixas–Santa Llogaia',short:'Baixas (FR)',city:'Santa Llogaia d\'Alguemar · Girona',ccaa:'Cataluña',lat:42.383,lon:1.959,t:'int',st:'operativa',stl:'En operación',
+  desc:'La interconexión pirenaica con Francia (1.400 + 800 MW), columna de los ≈3.000 MW actuales de capacidad España-Francia, apenas el 2,8% de la potencia española.',
+  f:[['Capacidad','1.400 + 800 MW'],['Contexto','España-Francia ≈3.000 MW (2,8%)'],['Pendiente','Gatika duplicará esa capacidad']],
+  src:'Redeia · Beatriz Corredor (15/07/2026)',lp:null},
+ {id:'tarifa',n:'Interconexión Marruecos',short:'Marruecos',city:'Tarifa · Cádiz',ccaa:'Andalucía',lat:36.010,lon:-5.606,t:'int',st:'operativa',stl:'En operación',
+  desc:'Dos cables submarinos bajo el Estrecho: 700 MW de capacidad con Marruecos, que en 2025 aportó 2.787 GWh al intercambio.',
+  f:[['Capacidad','700 MW (2 cables)'],['Intercambio 2025','2.787 GWh importados de Marruecos']],
+  src:'REE (Informe del Sistema 2025)',lp:null},
+ {id:'andorra',n:'Interconexión Andorra',short:'Andorra',city:'Sant Julià de Lòria',ccaa:'Pirineos',lat:42.464,lon:1.493,t:'int',st:'operativa',stl:'En operación',
+  desc:'60 MW con el principado andorrano, la menor de las interconexiones peninsulares.',
+  f:[['Capacidad','60 MW'],['Intercambio 2025','5 GWh']],
+  src:'REE',lp:[13,4,'r']}
+];
+
+const CAP=[
+ {n:'Solar fotovoltaica',v:'≈50 GW',p:'33,1%',w:100,c:'#c2880b'},
+ {n:'Eólica',v:'33,3 GW',p:'22,1%',w:66,c:'#16a34a'},
+ {n:'Ciclo combinado',v:'≈26 GW',p:'17,4%',w:52,c:'#e07b39'},
+ {n:'Hidráulica',v:'17,1 GW',p:'11,3%',w:34,c:'#2b7fc4'},
+ {n:'Nuclear',v:'7,4 GW',p:'≈5%',w:15,c:'#7c5cbf'},
+ {n:'Almacenamiento',v:'3,4 GW',p:'2,3%',w:7,c:'#0e9aa7'},
+ {n:'Carbón',v:'0,8 GW',p:'0,5%',w:2,c:'#6b7280'}
+];
+document.getElementById('capbars').innerHTML=CAP.map(b=>
+ '<div class="hbar"><div class="r1"><span class="who"><i style="background:'+b.c+'"></i> '+b.n+'</span><span>'+b.v+' · '+b.p+'</span></div>'+
+ '<div class="tr"><div class="fl2" style="width:'+b.w+'%;background:linear-gradient(90deg,'+b.c+','+b.c+'cc)"></div></div></div>').join('');
+
+const APAGON=[
+ ['28-abr-2025 · 12:03','Oscilación de 0,6 Hz durante más de 4 minutos; fallos en el control de tensión de plantas conectadas a la red.'],
+ ['12:33:30','Cero de tensión y desconexión de España y Portugal de la red europea: el mayor apagón de la historia del sistema ibérico.'],
+ ['17-jun-2025','El comité técnico publica su informe: la causa raíz estuvo en el control de tensión, no en la falta de generación.'],
+ ['oct-2025 · mar-2026','ENTSO-E entrega sus informes fáctico y de recomendaciones; la CNMC publica las suyas en marzo de 2026.'],
+ ['nov-2025','RD 997/2025: supervisión del control de tensión y agilización de permisos de almacenamiento (plazos a la mitad).'],
+ ['2026','Comisiones parlamentarias abiertas (prorrogadas hasta abril de 2027) · primera batería del sistema · mercado de capacidad.']
+];
+document.getElementById('apagon').innerHTML=APAGON.map(a=>
+ '<div class="hbar"><div class="r1"><span style="color:var(--acc);font-weight:800">'+a[0]+'</span></div>'+
+ '<div style="font-size:12.8px;color:var(--ink2);line-height:1.45;margin-top:2px">'+a[1]+'</div></div>').join('');
+
+/* ============ MAPA ============ */
+const G=window.SPAIN_GEO, VB=G.viewBox;
+const NS='http://www.w3.org/2000/svg';
+const map=document.getElementById('map');
+map.setAttribute('viewBox',VB.join(' '));
+
+function proj(lon,lat){
+  const y=-180/Math.PI*Math.log(Math.tan(Math.PI/4+lat*Math.PI/360));
+  return [(lon-G.bbox.lon0)*G.bbox.scale,(y-G.bbox.mercY0)*G.bbox.scale];
+}
+
+const gProv=document.createElementNS(NS,'g');
+Object.keys(G.paths).forEach(name=>{
+  const p=document.createElementNS(NS,'path');
+  p.setAttribute('d',G.paths[name]);
+  p.setAttribute('class','prov');
+  const tt=document.createElementNS(NS,'title'); tt.textContent=name;
+  p.appendChild(tt); gProv.appendChild(p);
+});
+map.appendChild(gProv);
+
+const ins=G.inset;
+const box=document.createElementNS(NS,'rect');
+box.setAttribute('x',ins.x-8); box.setAttribute('y',ins.y-8);
+box.setAttribute('width',ins.w+16); box.setAttribute('height',ins.h+16);
+box.setAttribute('rx',8); box.setAttribute('class','inset-box');
+map.appendChild(box);
+const bl=document.createElementNS(NS,'text');
+bl.setAttribute('x',ins.x-6); bl.setAttribute('y',ins.y-13); bl.setAttribute('class','inset-lab');
+bl.textContent='Canarias'; map.appendChild(bl);
+
+const gMk=document.createElementNS(NS,'g'); map.appendChild(gMk);
+const gLb=document.getElementById('labels');
+const tip=document.getElementById('tip');
+const stage=document.getElementById('stage');
+
+function shape(kind,x,y,attrs){
+  let el;
+  if(kind==='nuc'){const h=5.6;el=document.createElementNS(NS,'rect');el.setAttribute('x',x-h);el.setAttribute('y',y-h);el.setAttribute('width',2*h);el.setAttribute('height',2*h);el.setAttribute('rx',1.4);}
+  else if(kind==='gas'){el=document.createElementNS(NS,'circle');el.setAttribute('cx',x);el.setAttribute('cy',y);el.setAttribute('r',6.4);}
+  else if(kind==='car'){el=document.createElementNS(NS,'polygon');el.setAttribute('points',[(x-6.6)+','+(y-5),(x+6.6)+','+(y-5),x+','+(y+7)].join(' '));el.setAttribute('stroke-linejoin','round');}
+  else if(kind==='hid'){const r=7;el=document.createElementNS(NS,'polygon');el.setAttribute('points',[x+','+(y-r),(x+r*0.87)+','+(y-r/2),(x+r*0.87)+','+(y+r/2),x+','+(y+r),(x-r*0.87)+','+(y+r/2),(x-r*0.87)+','+(y-r/2)].join(' '));el.setAttribute('stroke-linejoin','round');}
+  else if(kind==='bom'){const h=6.2;el=document.createElementNS(NS,'rect');el.setAttribute('x',x-h);el.setAttribute('y',y-h);el.setAttribute('width',2*h);el.setAttribute('height',2*h);el.setAttribute('rx',1.6);el.setAttribute('transform','rotate(45 '+x+' '+y+')');}
+  else if(kind==='bes'){el=document.createElementNS(NS,'rect');el.setAttribute('x',x-7);el.setAttribute('y',y-4.6);el.setAttribute('width',14);el.setAttribute('height',9.2);el.setAttribute('rx',2);}
+  else if(kind==='ren'){el=document.createElementNS(NS,'polygon');el.setAttribute('points',[x+','+(y-7),(x+6.6)+','+(y+5.6),(x-6.6)+','+(y+5.6)].join(' '));el.setAttribute('stroke-linejoin','round');}
+  else {el=document.createElementNS(NS,'g');const r1=document.createElementNS(NS,'rect');r1.setAttribute('x',x-5);r1.setAttribute('y',y-6.5);r1.setAttribute('width',3.4);r1.setAttribute('height',13);el.appendChild(r1);const r2=document.createElementNS(NS,'rect');r2.setAttribute('x',x+1.6);r2.setAttribute('y',y-6.5);r2.setAttribute('width',3.4);r2.setAttribute('height',13);el.appendChild(r2);}
+  Object.keys(attrs).forEach(k2=>{if(el.setAttribute)el.setAttribute(k2,attrs[k2]);});
+  if(el.childNodes.length===0) el.setAttribute('class','shp');
+  else el.childNodes.forEach(c=>c.setAttribute('class','shp'));
+  return el;
+}
+
+SITES.forEach(s=>{
+  const [x,y]=proj(s.lon,s.lat);
+  s._x=x; s._y=y;
+  const g=document.createElementNS(NS,'g');
+  g.setAttribute('class','mk'); g.dataset.id=s.id;
+
+  const halo=document.createElementNS(NS,'circle');
+  halo.setAttribute('cx',x);halo.setAttribute('cy',y);halo.setAttribute('r',13.5);
+  halo.setAttribute('class','halo'); g.appendChild(halo);
+
+  let fill,stroke,dash='none';
+  if(s.st==='operativa'){fill=TC[s.t];stroke=TC[s.t];}
+  else if(s.st==='obra'){fill='#ffffff';stroke=TC[s.t];dash='4 3';}
+  else if(s.st==='anuncio'){fill='#ffffff';stroke=TC[s.t];dash='2.5 3';}
+  else {fill='#eef0f2';stroke='#6b7280';}
+  const shp=shape(s.t,x,y,{fill:fill,stroke:stroke,'stroke-dasharray':dash});
+  g.appendChild(shp);
+
+  const hit=document.createElementNS(NS,'circle');
+  hit.setAttribute('cx',x);hit.setAttribute('cy',y);hit.setAttribute('r',16);
+  hit.setAttribute('class','hit'); g.appendChild(hit);
+
+  g.addEventListener('mouseenter',e=>showTip(s,e));
+  g.addEventListener('mousemove',e=>moveTip(e));
+  g.addEventListener('mouseleave',()=>tip.classList.remove('on'));
+  g.addEventListener('click',()=>select(s.id,true));
+  gMk.appendChild(g);
+
+  if(s.lp){
+    const [dx,dy,side]=s.lp;
+    const d=document.createElement('div');
+    d.className='lb '+(side==='l'?'l':'r');
+    d.style.left=((x+dx)/VB[2]*100)+'%';
+    d.style.top=((y+dy)/VB[3]*100)+'%';
+    d.innerHTML='<i style="background:'+TC[s.t]+'"></i><span>'+s.short+'</span>';
+    d.dataset.id=s.id;
+    d.addEventListener('click',()=>select(s.id,true));
+    gLb.appendChild(d);
+  }
+});
+
+function showTip(s,e){
+  tip.innerHTML='<div class="t1">'+s.n+'</div><div class="t2">'+s.city+' · '+s.ccaa+'</div>'+
+    '<div class="t3">'+TN[s.t]+' · '+s.stl+'</div>';
+  tip.classList.add('on'); moveTip(e);
+}
+function moveTip(e){
+  const r=stage.getBoundingClientRect();
+  let x=e.clientX-r.left+14, y=e.clientY-r.top+14;
+  if(x+280>r.width) x=r.width-286;
+  if(y+90>r.height) y=r.height-95;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+
+/* ============ PANEL ============ */
+function select(id,scroll){
+  document.querySelectorAll('.mk').forEach(m=>m.classList.toggle('sel',m.dataset.id===id));
+  document.querySelectorAll('.lb').forEach(m=>m.classList.toggle('sel',m.dataset.id===id));
+  document.querySelectorAll('#idx button').forEach(b=>b.classList.toggle('sel',b.dataset.id===id));
+  const s=SITES.find(v=>v.id===id); if(!s) return;
+  const cls=s.st==='operativa'?'st-op':(s.st==='obra'?'st-ob':(s.st==='anuncio'?'st-an':'st-cl'));
+  document.getElementById('detail').innerHTML=
+    '<div class="status '+cls+'">'+s.stl+'</div>'+
+    '<h3>'+s.n+'</h3>'+
+    '<div class="where">'+s.city+' · '+s.ccaa+'</div>'+
+    '<div class="tech"><i style="background:'+TC[s.t]+'"></i>'+TN[s.t]+'</div>'+
+    '<p class="desc">'+s.desc+'</p>'+
+    '<dl class="facts">'+s.f.map(p=>'<dt>'+p[0]+'</dt><dd>'+p[1]+'</dd>').join('')+'</dl>'+
+    '<div class="src">Fuentes: '+s.src+'</div>';
+  if(scroll) document.getElementById('detail').scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+/* índice */
+const stOrder={operativa:0,obra:1,anuncio:2,cierre:3};
+const tOrder={bom:0,bes:1,nuc:2,gas:3,car:4,hid:5,ren:6,int:7};
+const idx=document.getElementById('idx');
+SITES.slice().sort((a,b)=>(stOrder[a.st]-stOrder[b.st])||(tOrder[a.t]-tOrder[b.t])||a.n.localeCompare(b.n)).forEach(s=>{
+  const b=document.createElement('button'); b.dataset.id=s.id;
+  b.innerHTML='<i style="width:10px;height:10px;border-radius:2px;background:'+TC[s.t]+';flex:none"></i><span class="nm">'+s.n.replace(/\s*\(.*\)/,'')+'</span><span class="yr">'+(s.st==='operativa'?'OK':s.st==='obra'?'OBRA':s.st==='anuncio'?'PROY':'CIERRE')+'</span>';
+  b.addEventListener('click',()=>select(s.id,true));
+  idx.appendChild(b);
+});
+
+/* filtros */
+function applyFilters(){
+  const on={};
+  document.querySelectorAll('#filters input').forEach(b=>{on[b.dataset.f]=b.checked;});
+  if('labels' in on) gLb.style.display = on.labels ? '' : 'none';
+  SITES.forEach(s=>{
+    const vis = !!on[s.t];
+    const g=document.querySelector('.mk[data-id="'+s.id+'"]'); if(g) g.style.display = vis?'':'none';
+    const l=document.querySelector('.lb[data-id="'+s.id+'"]'); if(l) l.style.display = vis?'':'none';
+  });
+}
+document.getElementById('filters').addEventListener('change',applyFilters);
+
+/* ============ TARJETAS ============ */
+const cards=document.getElementById('cards');
+const groups=[
+ {t:'Nuclear: siete reactores que se apagan entre 2030 y 2035',cls:'t-nuc',types:['nuc']},
+ {t:'Bombeo: la batería hidráulica que ya existe',cls:'t-bom',types:['bom']},
+ {t:'Baterías: del 96 MW de 2025 a la ola de permisos',cls:'t-bes',types:['bes']},
+ {t:'Gas y carbón: el respaldo que se transforma',cls:'t-gas',types:['gas','car']},
+ {t:'Renovables e interconectores',cls:'t-ren',types:['ren','int']}
+];
+groups.forEach(gr=>{
+  const keep=document.createElement('div'); keep.className='grp-keep'; cards.appendChild(keep);
+  const h=document.createElement('div'); h.className='grp-t'; h.textContent=gr.t; keep.appendChild(h);
+  let first=true;
+  SITES.filter(s=>s.card&&gr.types.includes(s.t)).forEach(s=>{
+    const d=document.createElement('div'); d.className='c3 '+gr.cls;
+    d.innerHTML='<h4>'+s.n+'</h4><div class="where">'+s.city+' · '+s.ccaa+'</div>'+
+      '<div class="status '+(s.st==='operativa'?'st-op':(s.st==='obra'?'st-ob':(s.st==='anuncio'?'st-an':'st-cl')))+'" style="margin:0 0 8px">'+s.stl+'</div>'+
+      '<ul>'+s.f.map(p=>'<li><b>'+p[0]+':</b> '+p[1]+'</li>').join('')+'</ul>';
+    d.style.cursor='pointer';
+    d.addEventListener('click',()=>{select(s.id,true);document.querySelector('.map-card').scrollIntoView({behavior:'smooth',block:'center'});});
+    if(first){keep.appendChild(d);first=false;}else{cards.appendChild(d);}
+  });
+});
+
+select('lamuela',false);
+</script>
+</body>
+</html>
