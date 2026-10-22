@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>La red eléctrica española en 2026 · Generación, almacenamiento y estabilidad</title>
+<title>La red eléctrica española 2020-2026 · Generación, almacenamiento y estabilidad</title>
 <style>
   :root{
     --bg:#f2f3f1; --card:#ffffff; --ink:#11161c; --ink2:#39424c; --muted:#6b7681;
@@ -156,7 +156,7 @@
   .bcol.alt .bar{background:linear-gradient(180deg,#7fd6b6,#16a06f)}
   .bcol.dim .pct{color:var(--warn)}
   .bcol.dim .bar{background:linear-gradient(180deg,#e6b16a,#b45309)}
-  .bx{display:flex;gap:18px;margin-top:8px}
+  .bx{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px}
   .bx div{flex:1;text-align:center;font-size:12.3px;color:var(--ink2);font-weight:700}
   .bx div span{display:block;font-weight:600;color:var(--muted);font-size:11.3px}
   .hbar{margin-bottom:11px}
@@ -184,8 +184,8 @@
 
   /* ---------- TIMELINE ---------- */
   .tl{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:24px 18px 18px;overflow-x:auto}
-  .tl .line{position:absolute;left:34px;right:34px;top:64px;height:2px;background:linear-gradient(90deg,var(--line2) 0%,var(--line2) 30%,var(--acc) 30%,var(--acc) 100%)}
-  .tl .row{display:grid;grid-template-columns:repeat(7,minmax(158px,1fr));gap:14px;position:relative;min-width:1100px}
+  .tl .line{position:absolute;left:34px;right:34px;top:64px;height:2px;background:linear-gradient(90deg,var(--line2) 0%,var(--line2) 24%,var(--acc) 24%,var(--acc) 100%)}
+  .tl .row{display:grid;grid-template-columns:repeat(8,minmax(150px,1fr));gap:14px;position:relative;min-width:1240px}
   .tl .it{position:relative;padding-top:80px}
   .tl .it::before{content:"";position:absolute;top:57px;left:0;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--line2)}
   .tl .it.hot::before{border-color:var(--acc);background:var(--acc);box-shadow:0 0 0 4px var(--acc-soft)}
@@ -259,6 +259,7 @@
     .sec-mapa{break-before:page;page-break-before:always}
     .sec-cards{break-before:page;page-break-before:always}
     .sec-charts{break-before:page;page-break-before:always;margin-top:0}
+    .sec-dec{break-before:page;page-break-before:always;margin-top:0}
     .sec-alm{break-before:page;page-break-before:always;margin-top:0}
     .sec-est{break-before:page;page-break-before:always;margin-top:0}
     .tl{overflow:visible}
@@ -280,11 +281,12 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="kick">Infografía · datos a 20 de octubre de 2026</div>
-    <h1>España se electrifica: 142.558 MW y la carrera por <em>estabilizar la red</em></h1>
-    <p class="sub">Mapa de la generación, el almacenamiento y los proyectos que sostienen el sistema eléctrico español: las cinco centrales nucleares que aún quedan, el bombeo hidráulico que trabaja cada noche, las primeras baterías del sistema tras el apagón del 28 de abril de 2025 y los 22,5 GW de almacenamiento que faltan para 2030.</p>
+    <div class="kick">Infografía · datos a 20 de octubre de 2026 · series desde 2020</div>
+    <h1>España se electrifica: +31,7 GW desde 2020 y la carrera por <em>estabilizar la red</em></h1>
+    <p class="sub">Mapa de la generación, el almacenamiento y los proyectos que sostienen el sistema eléctrico español —con la evolución desde 2020—: las cinco centrales nucleares que aún quedan, el bombeo hidráulico que trabaja cada noche, las primeras baterías del sistema tras el apagón del 28 de abril de 2025 y los 22,5 GW de almacenamiento que faltan para 2030.</p>
     <div class="chips">
       <div class="chip"><b>142.558 MW</b> instalados · 67% renovables</div>
+      <div class="chip">2020 → 2025: <b>+31,7 GW</b> instalados</div>
       <div class="chip"><b>22,5 GW</b> de almacenamiento a 2030 (PNIEC)</div>
       <div class="chip"><b>798 h</b> con precio ≤0 en 2025</div>
       <div class="chip">Apagón del <b>28 de abril de 2025</b></div>
@@ -299,7 +301,7 @@
     <div class="kpi hot">
       <div class="lab">Potencia instalada · cierre 2025</div>
       <div class="val">142.558 <small>MW (+7,3%)</small></div>
-      <div class="note">150.809 MW con autoconsumo. En un solo año entraron casi <b>10 GW renovables</b> (8,8 GW fotovoltaicos y 1,2 GW eólicos).</div>
+      <div class="note">150.809 MW con autoconsumo: +31,7 GW desde 2020 (110.839 MW). En 2025 entraron casi <b>10 GW renovables</b> (8,8 FV + 1,2 eólica).</div>
     </div>
     <div class="kpi">
       <div class="lab">Almacenamiento en servicio</div>
@@ -398,7 +400,7 @@
     <div class="sec-h">
       <span class="tag">Sistema</span>
       <h2>Un parque de 142 GW que ya se mueve sin termoeléctricas</h2>
-      <p>Capacidad instalada a cierre de 2025 y horas en las que el mercado paga por quitarse la energía.</p>
+      <p>Capacidad instalada a cierre de 2025 y horas (desde 2020) en las que el mercado paga por quitarse la energía.</p>
     </div>
     <div class="charts">
       <div class="box">
@@ -413,23 +415,90 @@
       </div>
       <div class="box">
         <h3>Horas con precio ≤0 €/MWh en el mercado diario</h3>
-        <p class="hint">Horas anuales con precio cero o negativo en OMIE. 2026 acumula ≈900 horas hasta agosto (UNEF).</p>
+        <p class="hint">Horas anuales con precio cero o negativo en OMIE. 2020 y 2021 no registraron ninguna; 2026 acumula ≈900 horas hasta agosto (UNEF).</p>
         <div class="bars">
+          <div class="bcol"><div class="pct">0</div><div class="bar" style="height:2%"></div></div>
+          <div class="bcol"><div class="pct">0</div><div class="bar" style="height:2%"></div></div>
+          <div class="bcol"><div class="pct">3</div><div class="bar" style="height:2%"></div></div>
           <div class="bcol"><div class="pct">109</div><div class="bar" style="height:12%"></div></div>
           <div class="bcol"><div class="pct">784</div><div class="bar" style="height:87%"></div></div>
           <div class="bcol"><div class="pct">798</div><div class="bar" style="height:89%"></div></div>
           <div class="bcol dim"><div class="pct">≈900</div><div class="bar" style="height:100%"></div></div>
         </div>
         <div class="bx">
+          <div>2020<span>0 h · año COVID</span></div>
+          <div>2021<span>0 h · récord eólico</span></div>
+          <div>2022<span>3 h · solo el 31-dic</span></div>
           <div>2023<span>109 h · 0,1% del año</span></div>
-          <div>2024<span>537 h a cero + 247 negativas</span></div>
+          <div>2024<span>537 a cero + 247 negativas</span></div>
           <div>2025<span>798 h · récord de mayo: 269</span></div>
-          <div>2026 (ene–ago)<span>≈900 h · 397 h negativas en T1</span></div>
+          <div>2026 (ene–ago)<span>≈900 h · 397 negativas en T1</span></div>
         </div>
         <div class="ana">
           <span class="k">Análisis</span>
-          <p><strong>El precio cero es el síntoma, no la enfermedad.</strong> Cuando el sol y el viento cubren la demanda, el mercado no tiene dónde poner la energía sobrante: en 2025 se vertieron 5.414 GWh y las horas negativas pasaron de ser excepción (2023) a rutina (2026). El sistema necesita capacidad de mover energía en el tiempo —bombeo y baterías— y capacidad firme para las horas sin renovables.</p>
+          <p><strong>El precio cero es el síntoma, no la enfermedad.</strong> Cuando el sol y el viento cubren la demanda, el mercado no tiene dónde poner la energía sobrante: de cero horas en 2020-2021 a tres el 31 de diciembre de 2022, 109 en 2023 y ~800 al año desde 2024. En 2025 se vertieron 5.414 GWh. El sistema necesita capacidad de mover energía en el tiempo —bombeo y baterías— y capacidad firme para las horas sin renovables.</p>
           <p><strong>Ahí entra el almacenamiento.</strong> Cada GWh de baterías desplaza vertidos, reduce el pico de precio y, sobre todo, compra horas de margen a la red. El efecto inverso también se ve: los 1.200 €/MWh de gas de agosto de 2026 explican por qué el ciclo combinado vuelve a facturar cuando el sistema aprieta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DÉCADA -->
+  <section class="sec-dec">
+    <div class="sec-h">
+      <span class="tag">Década</span>
+      <h2>2020 → 2026: la mayor transformación del sistema</h2>
+      <p>Seis años en los que España sumó 31,7 GW instalados, multiplicó por seis el coste de la estabilidad y aprendió a convivir con el precio cero.</p>
+    </div>
+    <div class="charts">
+      <div class="box">
+        <h3>Potencia instalada y mix renovable · 2020-2025</h3>
+        <p class="hint">GW instalados a cierre de año (REE, sistema eléctrico nacional: 110.839 → 142.558 MW) y cuota de las renovables en la generación de cada año (mix nacional).</p>
+        <div class="bars">
+          <div class="bcol"><div class="pct">110,8</div><div class="bar" style="height:78%"></div></div>
+          <div class="bcol"><div class="pct">113,2</div><div class="bar" style="height:79%"></div></div>
+          <div class="bcol"><div class="pct">119,1</div><div class="bar" style="height:83%"></div></div>
+          <div class="bcol"><div class="pct">125,6</div><div class="bar" style="height:88%"></div></div>
+          <div class="bcol"><div class="pct">132,3</div><div class="bar" style="height:93%"></div></div>
+          <div class="bcol"><div class="pct">142,6</div><div class="bar" style="height:100%"></div></div>
+        </div>
+        <div class="bx">
+          <div>2020<span>44,0% renov. · COVID</span></div>
+          <div>2021<span>46,7% renov. · récord</span></div>
+          <div>2022<span>42,2% renov. · seco</span></div>
+          <div>2023<span>50,3% renov. · 1ª vez &gt;50%</span></div>
+          <div>2024<span>56,8% renov. · récord</span></div>
+          <div>2025<span>55,5% renov. · 798 h ≤0</span></div>
+        </div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>De 111 a 143 GW en seis años, con el carbón fuera de escena.</strong> El parque ganó 31.719 MW (+28,6%): la potencia renovable pasó de 59,9 a ≈95 GW, mientras el carbón cayó de 5.733 MW (2020) a ~0,8 GW operativos (2025). El 30 de junio de 2020 cerraron a la vez Compostilla II, Guardo, La Robla, Meirama y Teruel; en julio de 2020, Lada; en 2021, Litoral de Almería y Narcea; As Pontes dejó de generar carbón en 2023, La Pereda en 2024, Aboño 2 pasó a gas en 2025 y Carboneras desconectó en diciembre de 2025.</p>
+          <p><strong>El precio cuenta la crisis; las horas cero, la nueva normalidad.</strong> El mercado diario pasó de 33,85 €/MWh (2020) a 167,52 €/MWh (2022, crisis del gas) y volvió a 65,29 €/MWh (2025). El dato estructural son las horas con precio ≤0: ninguna en 2020-2021, tres el 31 de diciembre de 2022, 109 en 2023 y ~800 al año desde 2024. La demanda, en cambio, se mueve poco (249,8 TWh en 2020 → 256,1 TWh en 2025): lo que cambia es el mix, no el consumo.</p>
+        </div>
+      </div>
+      <div class="box">
+        <h3>Precio medio del mercado diario · 2020-2025</h3>
+        <p class="hint">€/MWh del mercado diario (OMIE/REE) a cierre de año. 2022 incluye el efecto de la crisis del gas y del mecanismo de tope (RD 10/2022).</p>
+        <div class="bars">
+          <div class="bcol"><div class="pct">33,9</div><div class="bar" style="height:20%"></div></div>
+          <div class="bcol"><div class="pct">111,9</div><div class="bar" style="height:67%"></div></div>
+          <div class="bcol dim"><div class="pct">167,5</div><div class="bar" style="height:100%"></div></div>
+          <div class="bcol"><div class="pct">87,1</div><div class="bar" style="height:52%"></div></div>
+          <div class="bcol"><div class="pct">63,0</div><div class="bar" style="height:38%"></div></div>
+          <div class="bcol"><div class="pct">65,3</div><div class="bar" style="height:39%"></div></div>
+        </div>
+        <div class="bx">
+          <div>2020<span>33,85 € · COVID</span></div>
+          <div>2021<span>111,93 € · el gas dispara</span></div>
+          <div>2022<span>167,52 € · récord</span></div>
+          <div>2023<span>87,10 € · normaliza</span></div>
+          <div>2024<span>63,03 € · renovable ↑</span></div>
+          <div>2025<span>65,29 € · 798 h ≤0</span></div>
+        </div>
+        <div class="ana">
+          <span class="k">Análisis</span>
+          <p><strong>La curva del precio es la historia de la década.</strong> 2020 fue el año más barato de la serie (33,85 €/MWh, con la demanda hundida por la pandemia); 2022, la crisis ucraniana disparó el gas hasta 167,52 €/MWh —con el tope del RD 10/2022 amortiguando el impacto en las facturas—; y desde 2023 el desplome de los costes marginales, unido al auge solar, devolvió el precio a la banda de 60-90 €/MWh.</p>
+          <p><strong>El sistema paga cada vez más por la firmeza y cada vez menos por la energía.</strong> Mientras el €/MWh medio se estabiliza, la factura de la estabilidad —inercia, tensión, respuesta a frecuencia— crece sin parar: los servicios de ajuste pasaron de 601 M€ (2020) a 3.812 M€ (2025), ×6,3, con 12.445 M€ acumulados en seis años. Es el síntoma de un sistema con más potencia variable y menos máquinas síncronas.</p>
         </div>
       </div>
     </div>
@@ -473,6 +542,7 @@
         <div class="ana">
           <span class="k">Análisis</span>
           <p><strong>Escalar baterías es fácil; escalar el sistema, no.</strong> El pipeline de baterías alcanza los <b>39.489 MW</b> de permisos y proyectos en curso (REE, feb-2026), pero solo unos <b>700 MW</b> tienen compromiso de construcción firme (Aurora Energy Research, ago-2026). Entre medias están las ayudas: <b>818,3 M€ del FEDER</b> para 126 proyectos (2,2 GW y 9,4 GWh) y las convocatorias del IDAE que dejaron 690 MW de baterías standalone y 88 MW térmicas adjudicadas en 2024.</p>
+          <p><strong>El bombeo heredado ya trabaja al doble.</strong> Los 3.331 MW de bombeo puro no cambian desde 2020, pero su uso se ha disparado: la turbinación pasó de 2.748 GWh (2020) a 5.886 GWh (2025) y el consumo de bombeo de 4.621 a 9.204 GWh. La batería, en cambio, empieza de cero: 0 MW hasta 2023, ≈24 en 2024, 96 en 2025 y ≈260 en agosto de 2026.</p>
           <p><strong>El bombeo vuelve a los planos.</strong> Tras décadas sin nuevas centrales reversibles, las subastas BORALMAC han adjudicado <b>11 proyectos por 265 M€ y 49.940 MWh</b> (≈4.000 MW de turbinación): Meirama, Baells, La Barca, Los Guájares, Grandas de Salime, la ampliación de la José María de Oriol de Alcántara o el Salto de Chira en Canarias. El bombeo sigue siendo la única tecnología capaz de almacenar días enteros a escala de red.</p>
         </div>
       </div>
@@ -501,6 +571,7 @@
         <h3>El precio de la estabilidad, en cifras</h3>
         <p class="hint">Servicios de ajuste, inercia y capacidad firme.</p>
         <div class="hbar"><div class="r1"><span class="who"><i style="background:#e07b39"></i> Coste de servicios de ajuste 2025</span><span>3.812 M€ (+43%)</span></div><div class="tr"><div class="fl2" style="width:100%;background:linear-gradient(90deg,#e07b39,#f3b077)"></div></div></div>
+        <div class="hbar"><div class="r1"><span class="who"><i style="background:#e6b16a"></i> Acumulado 2020-2025 (de 601 a 3.812 M€)</span><span>12.445 M€ (×6,3)</span></div><div class="tr"><div class="fl2" style="width:92%;background:linear-gradient(90deg,#b45309,#e6b16a)"></div></div></div>
         <div class="hbar"><div class="r1"><span class="who"><i style="background:#b45309"></i> Peso en el precio final 2025</span><span>15,78 €/MWh (18,9%)</span></div><div class="tr"><div class="fl2" style="width:65%;background:linear-gradient(90deg,#b45309,#e6b16a)"></div></div></div>
         <div class="hbar"><div class="r1"><span class="who"><i style="background:#7c5cbf"></i> Horas esperadas sin suministrar (LOLE) 2025</span><span>6,26 h (estándar: 1,5 h)</span></div><div class="tr"><div class="fl2" style="width:88%;background:linear-gradient(90deg,#7c5cbf,#b49ae6)"></div></div></div>
         <div class="hbar"><div class="r1"><span class="who"><i style="background:#0e9aa7"></i> Respuesta Activa de la Demanda · 2S 2026</span><span>1.775 MW adjudicados</span></div><div class="tr"><div class="fl2" style="width:55%"></div></div></div>
@@ -518,18 +589,19 @@
   <section class="sec-tl">
     <div class="sec-h">
       <span class="tag">Cronología</span>
-      <h2>2025 – 2035: la década del almacenamiento</h2>
-      <p>Del apagón al objetivo de 22,5 GW, pasando por el mercado de capacidad y los últimos reactores.</p>
+      <h2>2020 – 2035: la década que lo cambió todo</h2>
+      <p>Del cierre masivo del carbón a la crisis del gas, el apagón y el objetivo de 22,5 GW de almacenamiento.</p>
     </div>
     <div class="tl">
       <div class="line"></div>
       <div class="row">
-        <div class="it hot"><div class="yr">2025</div><div class="tt">El punto de inflexión</div><div class="dd">28-abr: apagón que aísla la península de Europa. Sep: PNIEC 2023-2030 fija 22,5 GW de almacenamiento y 81% renovable. Nov: RD 997/2025 agiliza baterías y refuerza el control de tensión. Cierra As Pontes.</div></div>
+        <div class="it"><div class="yr">2020</div><div class="tt">El punto de partida</div><div class="dd">Demanda 249.819 GWh (−5,6% por la COVID). 30-jun: cierran Compostilla II, Guardo, La Robla, Meirama y Teruel; jul: Lada. El parque cierra en 110.839 MW, 54% renovable, con el carbón en 5.733 MW. Se aprueban el PNIEC original y la Estrategia de Hidrógeno.</div></div>
+        <div class="it hot"><div class="yr">2021·22</div><div class="tt">La crisis del gas</div><div class="dd">feb-2021: Estrategia de Almacenamiento (~20 GW a 2030). 2021 cierra con 46,7% renovable (récord) y el cierre de Litoral de Almería y Narcea. 2022: la guerra dispara el precio a 167,52 €/MWh (tope RD 10/2022); el seco deja el mix en 42,2% y el 31-dic se registran las primeras 3 horas a precio ≤0.</div></div>
+        <div class="it"><div class="yr">2023·24</div><div class="tt">Rebrote renovable</div><div class="dd">2023: primera vez que las renovables superan el 50% (50,3%) y As Pontes deja de generar carbón (109 h ≤0). 2024: récord renovable (56,8%), 784 h ≤0, La Pereda se apaga y el parque alcanza 132.343 MW. Sep: el PNIEC 2023-2030 fija 22,5 GW de almacenamiento.</div></div>
+        <div class="it hot"><div class="yr">2025</div><div class="tt">El punto de inflexión</div><div class="dd">28-abr: apagón que aísla la península de Europa. Cierra el año con 142.558 MW (+7,3%), 798 h ≤0, 5.414 GWh vertidos y un récord de coste de ajuste (3.812 M€). Sep: PNIEC 2023-2030 confirma 22,5 GW y 81% renovable. Nov: RD 997/2025 agiliza baterías y refuerza el control de tensión.</div></div>
         <div class="it hot"><div class="yr">2026</div><div class="tt">Primeras baterías y mercado de capacidad</div><div class="dd">Ene: Iberdrola pone en servicio las baterías de Alarcón (60 MW). Mar: 39.489 MW de baterías en el pipeline de REE. Jun: AAC de ENGIE en Tarifa (200 MW/800 MWh). Jul: 3ª MAP (615 M€) y nueva interconexión con Portugal (+1.000 MW). Sep: Orden que crea el mercado de capacidad.</div></div>
-        <div class="it hot"><div class="yr">2027</div><div class="tt">Gatika y las primeras obras grandes</div><div class="dd">Primer enlace del cable de Vizcaya a Francia (>50% de ejecución). Arranque previsto de obras en varios bombeos adjudicados (Meirama, Baells) y entrada de los primeros BESS rematados en construcción.</div></div>
-        <div class="it"><div class="yr">2028</div><div class="tt">Servicio de las baterías grandes</div><div class="dd">Palmosilla (Tarifa, 200 MW/800 MWh) entra en servicio; se completan las baterías del clúster de Sevilla y los proyectos de ENGIE y Repsol en Andalucía y Extremadura.</div></div>
-        <div class="it"><div class="yr">2029</div><div class="tt">FEDER al límite</div><div class="dd">Los 126 proyectos financiados con los 818,3 M€ del FEDER (2,2 GW y 9,4 GWh) deben estar ejecutados antes del 31 de diciembre. El mercado de capacidad arranca sus primeros contratos de largo plazo.</div></div>
-        <div class="it hot"><div class="yr">2030</div><div class="tt">22,5 GW y 81% renovable</div><div class="dd">Horizonte del PNIEC: 22,5 GW de almacenamiento (12,5 diario + 10 estacional), 81% de generación renovable, 62 GW eólicos y 76 GW fotovoltaicos. Cierre de Ascó I y Cofrentes.</div></div>
+        <div class="it"><div class="yr">2027·29</div><div class="tt">Gatika, bombeos y FEDER</div><div class="dd">Primer enlace del cable de Vizcaya a Francia (>50% de ejecución). Arranque de obras en bombeos BORALMAC (Meirama, Baells) y servicio de las primeras baterías grandes (Palmosilla, 200 MW/800 MWh). Los 126 proyectos del FEDER (818,3 M€) deben ejecutarse antes del 31-dic; el mercado de capacidad arranca sus primeros contratos.</div></div>
+        <div class="it hot"><div class="yr">2030</div><div class="tt">22,5 GW y 81% renovable</div><div class="dd">Horizonte del PNIEC: 22,5 GW de almacenamiento (12,5 diario + 10 estacional), 81% de generación renovable, 62 GW eólicos y 76 GW fotovoltaicos. Cierre de Ascó I, Cofrentes y Almaraz.</div></div>
         <div class="it"><div class="yr">2035</div><div class="tt">El final del programa nuclear</div><div class="dd">Cierre previsto de Vandellòs II y Trillo: España pasará de 7,4 GW a 3,2 GW de nuclear en 2030 y a cero en 2035, con 11.000 t de residuos gestionadas por Enresa.</div></div>
       </div>
     </div>
@@ -540,7 +612,7 @@
       <div>
         <h4>Fuentes</h4>
         <ul>
-          <li>Red Eléctrica / Redeia: Informe del Sistema Eléctrico 2025 (28/04/2026), potencia instalada a 31/12/2025 (11/03/2026), informes de mercado diario y módulos de generación</li>
+          <li>Red Eléctrica / Redeia: Informes del Sistema Eléctrico 2020-2025 (sistemaelectrico-ree.es), potencia instalada a 31/12 (2025: 11/03/2026), informes de mercado diario y módulos de generación</li>
           <li>MITECO: PNIEC 2023-2030 (24/09/2024), RD 997/2025 (BOE 05/11/2025), Orden TED/966/2026 (BOE 17/09/2026), 3ª MAP (jul-2026), resoluciones BORALMAC y FEDER (2024-2026)</li>
           <li>BOE: autorizaciones ambientales y de utilidad pública de almacenamiento 2026, prórroga de Almaraz Orden TED/864/2026 (14/08/2026)</li>
           <li>Comité de análisis de la crisis del 28-abr-2025 (informe técnico 17/06/2025), informes ENTSO-E (2025-2026) y CNMC</li>
@@ -549,11 +621,12 @@
           <li>Foro Nuclear: potencias de centrales hidráulicas y reversibles</li>
           <li>pv magazine España, El Periódico de la Energía, Energías Renovables, UNITNAVE (inventario BESS), Aurora Energy Research</li>
           <li>Empresas: Iberdrola, ENGIE, Repsol, Naturgy, Endesa, EDP, Enagás, Enresa</li>
-          <li>OMIE: informe anual 2025; UNEF (horas de precio cero 2026)</li>
+          <li>OMIE: informes anuales del mercado diario 2020-2025; UNEF (horas de precio cero 2026)</li>
         </ul>
       </div>
       <div>
         <h4>Notas metodológicas</h4>
+        <p>Las series históricas 2020-2025 (potencia instalada, cuota renovable del mix nacional, precio medio del mercado diario y horas con precio ≤0) proceden de los informes anuales de REE y de OMIE de cada año; los valores de 2025 son provisionales según REE. La cuota renovable es nacional: la peninsular difiere unos puntos (p. ej., 48,4% en 2021 frente al 46,7% nacional). En 2020 y 2021 no se registraron horas a precio ≤0 en el mercado diario peninsular; las tres primeras fueron el 31 de diciembre de 2022.</p>
         <p>Las coordenadas son municipales o aproximadas y sirven para localizar cada instalación en el mapa. Las potencias son brutas y pueden variar según la fuente: el bombeo «puro» del cierre de 2025 (3.331 MW, REE) excluye las centrales mixtas que también bombean, cuyo parque total ronda los 5,5 GW. Las baterías: 96 MW en servicio a 31/12/2025 según REE, frente a ≈260 MW estimados en prensa para agosto de 2026 (criterio de alcance distinto).</p>
         <p>El «pipeline» de 39.489 MW de baterías incluye proyectos con permiso o en curso, sin decisión de inversión: solo unos 700 MW tienen compromiso de construcción firme (Aurora Energy Research, ago-2026). El objetivo PNIEC de 22,5 GW a 2030 (12,5 + 10 GW) se confirmó en el RD 997/2025.</p>
         <p>Calendario nuclear: cierres de Ascó I y Cofrentes en 2030, Ascó II en 2032 y Vandellòs II y Trillo en 2035 (El País, ago-2026). Almaraz I y II quedaron prorrogadas hasta el 8 de junio de 2030 (Orden TED/864/2026). Algunos medios sitúan Ascó II y Vandellòs en 2031; se sigue la fuente más conservadora.</p>
@@ -565,7 +638,7 @@
       <div class="ct">
         <b>Certificado de calidad · Europenguin</b>
         <p>Cada dato de esta infografía —plantas, potencias, objetivos y cronología— procede de las fuentes citadas: informes de Red Eléctrica, resoluciones del BOE, comunicados de las empresas y prensa sectorial. Las estimaciones se marcan como tales; sin cifras inventadas.</p>
-        <p class="who">Datos verificados a 20 de octubre de 2026 · 65 puntos en el mapa · 24 fichas · 10 familias de fuentes</p>
+        <p class="who">Datos verificados a 20 de octubre de 2026 · series 2020-2026 · 65 puntos en el mapa · 24 fichas · 10 familias de fuentes</p>
       </div>
     </div>
   </footer>
