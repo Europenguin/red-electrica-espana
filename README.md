@@ -13,7 +13,7 @@ Datos actualizados a **20 de octubre de 2026**.
 | Sección | Qué incluye |
 |---|---|
 | Portada + KPIs | 142.558 MW instalados (+7,3%, +31,7 GW desde 2020), 3.427 MW de almacenamiento, objetivo PNIEC de 22,5 GW y 798 horas con precio ≤0 en 2025 |
-| Mapa | 65 puntos sobre mapa SVG de provincias: nuclear, gas (CCGT), carbón en cierre, hidráulica, bombeo, baterías, renovables e interconectores. Filtros por tecnología, etiquetas y panel de detalle con datos y fuentes |
+| Mapa | 66 puntos sobre mapa SVG de provincias: nuclear, gas (CCGT), carbón en cierre, hidráulica, bombeo, baterías, renovables e interconectores. Filtros por tecnología, etiquetas, **barra deslizante por año (2020-2030)** y panel de detalle con datos y fuentes |
 | Fichas | 24 tarjetas agrupadas en nuclear, bombeo, baterías, gas-carbón y renovables/interconectores, enlazadas con el mapa |
 | Gráficos | Capacidad instalada por tecnología (cierre 2025) y horas con precio ≤0 (2020-2026), cada uno con su bloque de análisis |
 | Década 2020-2026 | Potencia instalada y mix renovable por año (110,8 → 142,6 GW; 44,0% → 55,5% renovable) y precio medio del mercado diario (33,85 → 65,29 €/MWh, con el pico de 167,52 €/MWh en 2022), con análisis del cierre del carbón y de los servicios de ajuste |
@@ -61,7 +61,7 @@ Todo vive en el array `SITES` de `index.html`:
  card:1}                       // 1 = aparece también como ficha
 ```
 
-Al añadir una instalación, recuerda actualizar los KPIs, el chip de la portada, los contadores del panel y el sello del pie (número de puntos y fichas).
+Al añadir una instalación, recuerda actualizar los KPIs, el chip de la portada, los contadores del panel y el sello del pie (número de puntos y fichas). Si la instalación no existía en 2020 o cerrará antes de 2030, añade su rango de años en el objeto `YR` (`[desde, hasta]`; por defecto `[2020, 9999]`), que alimenta la barra deslizante de año del mapa.
 
 ## PDF / imprimir
 

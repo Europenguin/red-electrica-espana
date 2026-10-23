@@ -68,6 +68,10 @@
   .filters input{accent-color:var(--acc);margin:0}
   .btn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2)}
   .btn:hover{border-color:var(--acc);color:var(--acc)}
+  .yearf{display:flex;align-items:center;gap:8px;background:#fbfcfc;border:1px solid var(--line2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--ink2)}
+  .yearf input[type=range]{width:120px;accent-color:var(--acc);margin:0;cursor:pointer}
+  .yearf output{min-width:2.4em;text-align:center;font-weight:800;color:var(--acc)}
+  .yearf .ycnt{color:var(--muted);font-weight:600}
   .stage{position:relative;width:100%}
   .stage svg.map{width:100%;height:auto;display:block;overflow:visible}
   .prov{fill:#eceef0;stroke:#fff;stroke-width:.9;transition:fill .15s}
@@ -230,7 +234,7 @@
     body{background:#fff;margin:0}
     .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .btn,.filters,.tip{display:none}
+    .btn,.filters,.tip,.yearf{display:none}
     .panel{position:static}
     .wrap{padding:0}
     .hero .wrap{padding-top:30px;padding-bottom:30px}
@@ -330,7 +334,7 @@
     <div class="sec-h">
       <span class="tag">Mapa</span>
       <h2>Generación, almacenamiento y fronteras eléctricas</h2>
-      <p>Forma = tecnología · relleno = en operación · trazo discontinuo = en obra o anunciado · gris = cierre. Pasa el ratón o pulsa un punto.</p>
+      <p>Forma = tecnología · relleno = en operación · trazo discontinuo = en obra o anunciado · gris = cierre. La barra de año filtra por fecha de operación o de proyecto. Pasa el ratón o pulsa un punto.</p>
     </div>
 
     <div class="map-grid">
@@ -346,6 +350,12 @@
             <label><input type="checkbox" data-f="ren" checked> Renovables</label>
             <label><input type="checkbox" data-f="int" checked> Interconectores</label>
             <label><input type="checkbox" data-f="labels" checked> Etiquetas</label>
+          </div>
+          <div class="yearf" title="Filtra el mapa por año de operación o de proyecto">
+            <label for="yearsld">Año</label>
+            <input type="range" id="yearsld" min="2020" max="2030" step="1" value="2026">
+            <output id="yearout" for="yearsld">2026</output>
+            <span class="ycnt" id="ycount"></span>
           </div>
           <button class="btn" onclick="window.print()">Guardar en PDF / imprimir</button>
         </div>
@@ -630,6 +640,7 @@
         <p>Las coordenadas son municipales o aproximadas y sirven para localizar cada instalación en el mapa. Las potencias son brutas y pueden variar según la fuente: el bombeo «puro» del cierre de 2025 (3.331 MW, REE) excluye las centrales mixtas que también bombean, cuyo parque total ronda los 5,5 GW. Las baterías: 96 MW en servicio a 31/12/2025 según REE, frente a ≈260 MW estimados en prensa para agosto de 2026 (criterio de alcance distinto).</p>
         <p>El «pipeline» de 39.489 MW de baterías incluye proyectos con permiso o en curso, sin decisión de inversión: solo unos 700 MW tienen compromiso de construcción firme (Aurora Energy Research, ago-2026). El objetivo PNIEC de 22,5 GW a 2030 (12,5 + 10 GW) se confirmó en el RD 997/2025.</p>
         <p>Calendario nuclear: cierres de Ascó I y Cofrentes en 2030, Ascó II en 2032 y Vandellòs II y Trillo en 2035 (El País, ago-2026). Almaraz I y II quedaron prorrogadas hasta el 8 de junio de 2030 (Orden TED/864/2026). Algunos medios sitúan Ascó II y Vandellòs en 2031; se sigue la fuente más conservadora.</p>
+        <p>El filtro de año del mapa (2020-2030, por defecto 2026) muestra cada instalación desde su entrada en servicio —las existentes son anteriores a 2020— o, en proyectos, desde el año de autorización, adjudicación u obra según las fuentes citadas, y la retira en su año de cierre (o la mantiene si sigue en servicio). Gatika y el bombeo de Chira usan el inicio de obra como aproximación; los calendarios de cierre nuclear (2030-2035) proceden del PNIEC y del citado calendario de cierres.</p>
         <p>Proyectos anunciados y adjudicados (bombeos BORALMAC, BESS con autorización) están sujetos a permisos y decisión de inversión. Mapa: límites provinciales a partir de datos abiertos (GeoJSON), proyección Mercator con recuadro de Canarias no escala.</p>
       </div>
     </div>
@@ -638,7 +649,7 @@
       <div class="ct">
         <b>Certificado de calidad · Europenguin</b>
         <p>Cada dato de esta infografía —plantas, potencias, objetivos y cronología— procede de las fuentes citadas: informes de Red Eléctrica, resoluciones del BOE, comunicados de las empresas y prensa sectorial. Las estimaciones se marcan como tales; sin cifras inventadas.</p>
-        <p class="who">Datos verificados a 20 de octubre de 2026 · series 2020-2026 · 65 puntos en el mapa · 24 fichas · 10 familias de fuentes</p>
+        <p class="who">Datos verificados a 20 de octubre de 2026 · series 2020-2026 · 66 puntos en el mapa · 24 fichas · 10 familias de fuentes</p>
       </div>
     </div>
   </footer>
@@ -935,6 +946,19 @@ const SITES=[
   src:'REE',lp:[13,4,'r']}
 ];
 
+/* Años de visibilidad en el mapa: [desde, hasta] — por defecto [2020, 9999].
+   Existentes: anteriores a 2020. Proyectos: año de autorización/adjudicación/obra (fuentes citadas).
+   Cierres: último año visible. */
+const YR={
+ almaraz:[2020,2030], asco:[2020,2032], cofrentes:[2020,2030], trillo:[2020,2035], vandellos:[2020,2035],
+ escatron:[2026,9999], 'aspontes-gas':[2023,9999],
+ soto:[2020,2026], abonno:[2020,2025], compostilla:[2020,2020], 'andorra-t':[2020,2020], carboneras:[2020,2025], losbarrios:[2020,2027],
+ alcantara2:[2024,9999], meirama:[2024,9999], baells:[2026,9999], laguajares:[2026,9999], labarca:[2026,9999], grandas:[2026,9999], piorno:[2026,9999], chira:[2024,9999],
+ alarcon:[2026,9999], tebar:[2026,9999], 'canarias-bess':[2026,9999], palmosilla:[2026,9999], cerrillo:[2026,9999], babor:[2026,9999], tagus2:[2026,9999], batcedillo:[2025,9999], valdesolar:[2026,9999], trujillo:[2026,9999], orcoyen:[2026,9999], azor:[2026,9999], bruc:[2026,9999], andujar:[2026,9999], 'picón':[2026,9999], tabernas:[2026,9999], talayuela:[2026,9999],
+ beariz:[2026,9999], gatika:[2024,9999], donrodrigo:[2026,9999]
+};
+SITES.forEach(s=>{const r=YR[s.id]; s.y0=r?r[0]:2020; s.y1=r?r[1]:9999;});
+
 const CAP=[
  {n:'Solar fotovoltaica',v:'≈50 GW',p:'33,1%',w:100,c:'#c2880b'},
  {n:'Eólica',v:'33,3 GW',p:'22,1%',w:66,c:'#16a34a'},
@@ -1088,25 +1112,36 @@ function select(id,scroll){
 const stOrder={operativa:0,obra:1,anuncio:2,cierre:3};
 const tOrder={bom:0,bes:1,nuc:2,gas:3,car:4,hid:5,ren:6,int:7};
 const idx=document.getElementById('idx');
+const idxBtn={};
 SITES.slice().sort((a,b)=>(stOrder[a.st]-stOrder[b.st])||(tOrder[a.t]-tOrder[b.t])||a.n.localeCompare(b.n)).forEach(s=>{
   const b=document.createElement('button'); b.dataset.id=s.id;
   b.innerHTML='<i style="width:10px;height:10px;border-radius:2px;background:'+TC[s.t]+';flex:none"></i><span class="nm">'+s.n.replace(/\s*\(.*\)/,'')+'</span><span class="yr">'+(s.st==='operativa'?'OK':s.st==='obra'?'OBRA':s.st==='anuncio'?'PROY':'CIERRE')+'</span>';
   b.addEventListener('click',()=>select(s.id,true));
-  idx.appendChild(b);
+  idx.appendChild(b); idxBtn[s.id]=b;
 });
 
-/* filtros */
+/* filtros (tecnología + año) */
+const ysl=document.getElementById('yearsld');
+const yout=document.getElementById('yearout');
+const ycnt=document.getElementById('ycount');
+let curYear=+ysl.value;
+ysl.addEventListener('input',()=>{curYear=+ysl.value;yout.textContent=curYear;applyFilters();});
 function applyFilters(){
   const on={};
   document.querySelectorAll('#filters input').forEach(b=>{on[b.dataset.f]=b.checked;});
   if('labels' in on) gLb.style.display = on.labels ? '' : 'none';
+  let n=0;
   SITES.forEach(s=>{
-    const vis = !!on[s.t];
+    const vis = !!on[s.t] && s.y0<=curYear && curYear<=s.y1;
+    if(vis) n++;
     const g=document.querySelector('.mk[data-id="'+s.id+'"]'); if(g) g.style.display = vis?'':'none';
     const l=document.querySelector('.lb[data-id="'+s.id+'"]'); if(l) l.style.display = vis?'':'none';
+    const b=idxBtn[s.id]; if(b) b.style.display = vis?'':'none';
   });
+  ycnt.textContent=n+' instalaciones en '+curYear;
 }
 document.getElementById('filters').addEventListener('change',applyFilters);
+applyFilters();
 
 /* ============ TARJETAS ============ */
 const cards=document.getElementById('cards');
